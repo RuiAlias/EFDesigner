@@ -87,7 +87,7 @@ namespace Sawczyn.EFDesigner.EFModel
          }
       }
 
-#region Warning display
+      #region Warning display
 
       // set as methods to avoid issues around serialization
 

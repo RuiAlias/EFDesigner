@@ -165,7 +165,6 @@
     </Content>
     <Content Include="MefExtension\ValidationExtensionEnablement.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ValidationExtensionEnablement.cs</LastGenOutput>
     </Content>
     <Content Include="MefExtension\ValidationExtensionRegistrar.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

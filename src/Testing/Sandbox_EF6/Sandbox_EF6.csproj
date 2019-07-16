@@ -70,8 +70,6 @@
     <None Include="EFModel.efmodel.diagram">
       <DependentUpon>EFModel.efmodel</DependentUpon>
     </None>
-    <None Include="TestModel.efmodel" />
-    <None Include="TestModel.efmodel.diagram" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="EFModel.tt">

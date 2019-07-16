@@ -147,6 +147,7 @@ namespace Sawczyn.EFDesigner.EFModel
 				new DomainMemberInfo(typeof(ModelRoot), "ShowWarningsInDesigner", ModelRoot.ShowWarningsInDesignerDomainPropertyId, typeof(ModelRoot.ShowWarningsInDesignerPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelRoot), "LayoutAlgorithm", ModelRoot.LayoutAlgorithmDomainPropertyId, typeof(ModelRoot.LayoutAlgorithmPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelRoot), "LayoutAlgorithmSettings", ModelRoot.LayoutAlgorithmSettingsDomainPropertyId, typeof(ModelRoot.LayoutAlgorithmSettingsPropertyHandler)),
+				new DomainMemberInfo(typeof(ModelRoot), "OutputDirectories", ModelRoot.OutputDirectoriesDomainPropertyId, typeof(ModelRoot.OutputDirectoriesPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelClass), "IsAbstract", ModelClass.IsAbstractDomainPropertyId, typeof(ModelClass.IsAbstractPropertyHandler)),
 				new DomainMemberInfo(typeof(ModelClass), "TableName", ModelClass.TableNameDomainPropertyId, typeof(ModelClass.TableNamePropertyHandler)),
 				new DomainMemberInfo(typeof(ModelClass), "DatabaseSchema", ModelClass.DatabaseSchemaDomainPropertyId, typeof(ModelClass.DatabaseSchemaPropertyHandler)),

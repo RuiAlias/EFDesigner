@@ -52,6 +52,19 @@ namespace Sawczyn.EFDesigner.EFModel
          }
       }
 
+      private OutputDirectories GetOutputDirectoriesValue()
+      {
+         return new OutputDirectories(this);
+      }
+
+      private void SetOutputDirectoriesValue(OutputDirectories newValue)
+      {
+         ContextOutputDirectory = newValue.ContextOutputDirectory;
+         EntityOutputDirectory = newValue.EntityOutputDirectory;
+         EnumOutputDirectory = newValue.EnumOutputDirectory;
+         StructOutputDirectory = newValue.StructOutputDirectory;
+      }
+
       internal sealed partial class LayoutAlgorithmPropertyHandler
       {
          private static readonly Dictionary<LayoutAlgorithm, LayoutAlgorithmSettings> settingsCache = new Dictionary<LayoutAlgorithm, LayoutAlgorithmSettings>();

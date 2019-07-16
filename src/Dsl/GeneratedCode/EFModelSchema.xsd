@@ -270,6 +270,12 @@
             <xsd:documentation>Tunable parameters for auto-layout of the designer</xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
+        <!-- Property: OutputDirectories -->
+        <xsd:attribute name="outputDirectories" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>Default locations for code generation, per generated type</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>

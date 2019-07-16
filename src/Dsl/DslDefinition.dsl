@@ -49,7 +49,7 @@
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="368a7c8c-e0db-40ef-b678-dbc4580d9e54" Description="Output directory for entities" Name="EntityOutputDirectory" DisplayName="Output Directory - Entities" Category="Code Generation">
+        <DomainProperty Id="368a7c8c-e0db-40ef-b678-dbc4580d9e54" Description="Output directory for entities" Name="EntityOutputDirectory" DisplayName="Output Directory - Entities" Category="Code Generation" IsBrowsable="false">
           <Attributes>
             <ClrAttribute Name="System.ComponentModel.TypeConverter">
               <Parameters>
@@ -61,7 +61,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="9e0ffa12-8733-40d2-8819-73740de7fecf" Description="Project directory for DbContext-related files" Name="ContextOutputDirectory" DisplayName="Output Directory - DbContext" Category="Code Generation">
+        <DomainProperty Id="9e0ffa12-8733-40d2-8819-73740de7fecf" Description="Project directory for DbContext-related files" Name="ContextOutputDirectory" DisplayName="Output Directory - DbContext" Category="Code Generation" IsBrowsable="false">
           <Attributes>
             <ClrAttribute Name="System.ComponentModel.TypeConverter">
               <Parameters>
@@ -73,7 +73,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="5de798f2-310f-40f7-8188-37690e6691b5" Description="Project directory for enums" Name="EnumOutputDirectory" DisplayName="Output Directory - Enums" Category="Code Generation">
+        <DomainProperty Id="5de798f2-310f-40f7-8188-37690e6691b5" Description="Project directory for enums" Name="EnumOutputDirectory" DisplayName="Output Directory - Enums" Category="Code Generation" IsBrowsable="false">
           <Attributes>
             <ClrAttribute Name="System.ComponentModel.TypeConverter">
               <Parameters>
@@ -188,7 +188,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="35350509-1856-4ca7-884a-1cee2552eef9" Description="Project directory for generated structures (owned/complex types)" Name="StructOutputDirectory" DisplayName="Output Directory - Structs" Category="Code Generation">
+        <DomainProperty Id="35350509-1856-4ca7-884a-1cee2552eef9" Description="Project directory for generated structures (owned/complex types)" Name="StructOutputDirectory" DisplayName="Output Directory - Structs" Category="Code Generation" IsBrowsable="false">
           <Attributes>
             <ClrAttribute Name="System.ComponentModel.TypeConverter">
               <Parameters>
@@ -249,6 +249,23 @@
         <DomainProperty Id="879483d1-6f57-4fc2-b501-4c62e9ff2a5d" Description="Tunable parameters for auto-layout of the designer" Name="LayoutAlgorithmSettings" DisplayName="Layout Algorithm Settings" Category="Designer">
           <Type>
             <ExternalTypeMoniker Name="/Microsoft.Msagl.Core.Layout/LayoutAlgorithmSettings" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="48bfe8de-edc4-4d40-945a-8f5afc97191d" Description="Default locations for code generation, per generated type" Name="OutputDirectories" DisplayName="Output Directories" Kind="CustomStorage" Category="Code Generation">
+          <Attributes>
+            <ClrAttribute Name="System.ComponentModel.TypeConverter">
+              <Parameters>
+                <AttributeParameter Value="typeof(System.ComponentModel.ExpandableObjectConverter)" />
+              </Parameters>
+            </ClrAttribute>
+          </Attributes>
+          <Type>
+            <ExternalTypeMoniker Name="OutputDirectories" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="fd8256be-6811-4eda-a5a7-f1916aa3b7c8" Description="Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Type Namespaces" Name="TypeNamespaces" DisplayName="Type Namespaces" Kind="CustomStorage">
+          <Type>
+            <ExternalTypeMoniker Name="TypeNamespaces" />
           </Type>
         </DomainProperty>
       </Properties>
@@ -1383,6 +1400,10 @@
       </Literals>
     </DomainEnumeration>
     <ExternalType Name="LayoutAlgorithmSettings" Namespace="Microsoft.Msagl.Core.Layout" />
+    <ExternalType Name="OutputDirectories" Namespace="Sawczyn.EFDesigner.EFModel">
+      <Notes>Bundles directories for code generation output</Notes>
+    </ExternalType>
+    <ExternalType Name="TypeNamespaces" Namespace="Sawczyn.EFDesigner.EFModel" />
   </Types>
   <Shapes>
     <CompartmentShape Id="8055f08f-3d3a-435f-8b47-7afcd0e051bd" Description="" Name="ClassShape" DisplayName="Class Shape" Namespace="Sawczyn.EFDesigner.EFModel" GeneratesDoubleDerived="true" FixedTooltipText="Class Shape" TextColor="White" ExposesTextColor="true" FillColor="0, 122, 204" InitialHeight="0.3" OutlineThickness="0.01" FillGradientMode="None" ExposesOutlineColorAsProperty="true" ExposesFillColorAsProperty="true" ExposesOutlineDashStyleAsProperty="true" ExposesOutlineThicknessAsProperty="true" Geometry="Rectangle">
@@ -1713,6 +1734,12 @@
           </XmlPropertyData>
           <XmlPropertyData XmlName="layoutAlgorithmSettings">
             <DomainPropertyMoniker Name="ModelRoot/LayoutAlgorithmSettings" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="outputDirectories">
+            <DomainPropertyMoniker Name="ModelRoot/OutputDirectories" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="typeNamespaces">
+            <DomainPropertyMoniker Name="ModelRoot/TypeNamespaces" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>

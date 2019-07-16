@@ -525,6 +525,18 @@
     <value>Designer</value>
     <comment>Category for DomainProperty &apos;LayoutAlgorithmSettings&apos; on DomainClass &apos;ModelRoot&apos;</comment>
   </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/OutputDirectories.Description" xml:space="preserve">
+    <value>Default locations for code generation, per generated type</value>
+    <comment>Description for DomainProperty &apos;OutputDirectories&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/OutputDirectories.DisplayName" xml:space="preserve">
+    <value>Output Directories</value>
+    <comment>DisplayName for DomainProperty &apos;OutputDirectories&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/OutputDirectories.Category" xml:space="preserve">
+    <value>Code Generation</value>
+    <comment>Category for DomainProperty &apos;OutputDirectories&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
   <data name="Sawczyn.EFDesigner.EFModel.ModelClass.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ModelClass&apos;</comment>
