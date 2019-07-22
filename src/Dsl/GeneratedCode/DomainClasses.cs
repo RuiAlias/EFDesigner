@@ -3085,6 +3085,93 @@ namespace Sawczyn.EFDesigner.EFModel
 		}
 		
 		#endregion
+		#region TypeNamespaces domain property code
+		
+		/// <summary>
+		/// TypeNamespaces domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid TypeNamespacesDomainPropertyId = new global::System.Guid(0xfd8256be, 0x6811, 0x4eda, 0xa5, 0xa7, 0xf1, 0x91, 0x6a, 0xa3, 0xb7, 0xc8);
+		
+		/// <summary>
+		/// Storage for TypeNamespaces
+		/// </summary>
+		private TypeNamespaces typeNamespacesPropertyStorage;
+		
+		/// <summary>
+		/// Gets or sets the value of TypeNamespaces domain property.
+		/// Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Type Namespaces
+		/// </summary>
+		[DslDesign::DisplayNameResource("Sawczyn.EFDesigner.EFModel.ModelRoot/TypeNamespaces.DisplayName", typeof(global::Sawczyn.EFDesigner.EFModel.EFModelDomainModel), "Sawczyn.EFDesigner.EFModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Sawczyn.EFDesigner.EFModel.ModelRoot/TypeNamespaces.Description", typeof(global::Sawczyn.EFDesigner.EFModel.EFModelDomainModel), "Sawczyn.EFDesigner.EFModel.GeneratedCode.DomainModelResx")]
+		[DslModeling::DomainObjectId("fd8256be-6811-4eda-a5a7-f1916aa3b7c8")]
+		public TypeNamespaces TypeNamespaces
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return typeNamespacesPropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				TypeNamespacesPropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the ModelRoot.TypeNamespaces domain property.
+		/// </summary>
+		internal sealed partial class TypeNamespacesPropertyHandler : DslModeling::DomainPropertyValueHandler<ModelRoot, TypeNamespaces>
+		{
+			private TypeNamespacesPropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the ModelRoot.TypeNamespaces domain property value handler.
+			/// </summary>
+			public static readonly TypeNamespacesPropertyHandler Instance = new TypeNamespacesPropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the ModelRoot.TypeNamespaces domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return TypeNamespacesDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed TypeNamespaces GetValue(ModelRoot element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.typeNamespacesPropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(ModelRoot element, TypeNamespaces newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				TypeNamespaces oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.typeNamespacesPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Comments opposite domain role accessor
 		
 		/// <summary>

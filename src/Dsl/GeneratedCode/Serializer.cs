@@ -715,20 +715,20 @@ namespace Sawczyn.EFDesigner.EFModel
 					}
 				}
 			}
-			// OutputDirectories
+			// TypeNamespaces
 			if (!serializationContext.Result.Failed)
 			{
-				string attribOutputDirectories = EFModelSerializationHelper.Instance.ReadAttribute(serializationContext, element, reader, "outputDirectories");
-				if (attribOutputDirectories != null)
+				string attribTypeNamespaces = EFModelSerializationHelper.Instance.ReadAttribute(serializationContext, element, reader, "typeNamespaces");
+				if (attribTypeNamespaces != null)
 				{
-					OutputDirectories valueOfOutputDirectories;
-					if (DslModeling::SerializationUtilities.TryGetValue<OutputDirectories>(serializationContext, attribOutputDirectories, out valueOfOutputDirectories))
+					TypeNamespaces valueOfTypeNamespaces;
+					if (DslModeling::SerializationUtilities.TryGetValue<TypeNamespaces>(serializationContext, attribTypeNamespaces, out valueOfTypeNamespaces))
 					{
-						instanceOfModelRoot.OutputDirectories = valueOfOutputDirectories;
+						instanceOfModelRoot.TypeNamespaces = valueOfTypeNamespaces;
 					}
 					else
 					{	// Invalid property value, ignored.
-						EFModelSerializationBehaviorSerializationMessages.IgnoredPropertyValue(serializationContext, reader, "outputDirectories", typeof(OutputDirectories), attribOutputDirectories);
+						EFModelSerializationBehaviorSerializationMessages.IgnoredPropertyValue(serializationContext, reader, "typeNamespaces", typeof(TypeNamespaces), attribTypeNamespaces);
 					}
 				}
 			}
@@ -1761,14 +1761,14 @@ namespace Sawczyn.EFDesigner.EFModel
 					EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "layoutAlgorithmSettings", serializedPropValue);
 				}
 			}
-			// OutputDirectories
+			// TypeNamespaces
 			if (!serializationContext.Result.Failed)
 			{
-				OutputDirectories propValue = instanceOfModelRoot.OutputDirectories;
-				string serializedPropValue = DslModeling::SerializationUtilities.GetString<OutputDirectories>(serializationContext, propValue);
+				TypeNamespaces propValue = instanceOfModelRoot.TypeNamespaces;
+				string serializedPropValue = DslModeling::SerializationUtilities.GetString<TypeNamespaces>(serializationContext, propValue);
 				if (!serializationContext.Result.Failed)
 				{
-					EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "outputDirectories", serializedPropValue);
+					EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "typeNamespaces", serializedPropValue);
 				}
 			}
 		}

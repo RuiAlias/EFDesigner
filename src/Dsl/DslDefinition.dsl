@@ -263,7 +263,7 @@
             <ExternalTypeMoniker Name="OutputDirectories" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="fd8256be-6811-4eda-a5a7-f1916aa3b7c8" Description="Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Type Namespaces" Name="TypeNamespaces" DisplayName="Type Namespaces" Kind="CustomStorage">
+        <DomainProperty Id="fd8256be-6811-4eda-a5a7-f1916aa3b7c8" Description="Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Type Namespaces" Name="TypeNamespaces" DisplayName="Type Namespaces">
           <Type>
             <ExternalTypeMoniker Name="TypeNamespaces" />
           </Type>
@@ -1735,7 +1735,7 @@
           <XmlPropertyData XmlName="layoutAlgorithmSettings">
             <DomainPropertyMoniker Name="ModelRoot/LayoutAlgorithmSettings" />
           </XmlPropertyData>
-          <XmlPropertyData XmlName="outputDirectories">
+          <XmlPropertyData XmlName="outputDirectories" Representation="Ignore">
             <DomainPropertyMoniker Name="ModelRoot/OutputDirectories" />
           </XmlPropertyData>
           <XmlPropertyData XmlName="typeNamespaces">

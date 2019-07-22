@@ -65,6 +65,37 @@ namespace Sawczyn.EFDesigner.EFModel
          StructOutputDirectory = newValue.StructOutputDirectory;
       }
 
+      partial class TypeNamespacesPropertyHandler
+      {
+         /// <summary>
+         /// For backward compatability. See OutputDirectoriesPropertyHandler.
+         /// </summary>
+         /// <param name="element"></param>
+         /// <param name="oldValue"></param>
+         /// <param name="newValue"></param>
+         protected override void OnValueChanging(ModelRoot element, TypeNamespaces oldValue, TypeNamespaces newValue)
+         {
+            base.OnValueChanging(element, oldValue, newValue);
+
+            if (!element.Store.InUndoRedoOrRollback)
+            {
+               if (oldValue.ContextNamespace != newValue.ContextNamespace)
+               {
+                  element.Namespace = newValue.ContextNamespace;
+
+                  if (oldValue.EntityNamespace == oldValue.ContextNamespace)
+                     element.TypeNamespaces.EntityNamespace = newValue.ContextNamespace;
+
+                  if (oldValue.EnumNamespace == oldValue.ContextNamespace)
+                     element.TypeNamespaces.EnumNamespace = newValue.ContextNamespace;
+
+                  if (oldValue.StructNamespace == oldValue.ContextNamespace)
+                     element.TypeNamespaces.StructNamespace = newValue.ContextNamespace;
+               }
+            }
+         }
+      }
+
       internal sealed partial class LayoutAlgorithmPropertyHandler
       {
          private static readonly Dictionary<LayoutAlgorithm, LayoutAlgorithmSettings> settingsCache = new Dictionary<LayoutAlgorithm, LayoutAlgorithmSettings>();
