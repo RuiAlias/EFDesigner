@@ -5,7 +5,7 @@ namespace Sawczyn.EFDesigner.EFModel
 
    /// <summary>
    ///    Bundles the various output directory choices in the model. Done this way for backward compatability; prior to
-   ///    1.3.0.5 these were four separate properties, and we don't want to break old models by remmoving those and
+   ///    1.3.0.6 these were four separate properties, and we don't want to break old models by remmoving those and
    ///    replacing them with the one.
    /// </summary>
    public class OutputDirectories

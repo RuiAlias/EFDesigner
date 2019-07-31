@@ -31,9 +31,11 @@ and is currently running through their process. As of this writing, there is no 
 possible) to edit the model if you need to change connections (unidirectional/bidirectional associations, inheritance
 and comment attachments).
 
+The issue appears to have been fixed in v16.3.0 Preview 1.
+
 **ChangeLog**
 
-**1.3.0.5**
+**1.3.0.6**
    - Added a model fixup for when user doesn't use full enumeration name for a property's initial value in an entity
 
 **1.3.0.4**
