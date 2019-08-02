@@ -7,7 +7,7 @@
 #><#@ import namespace="System.IO"
 #><#@ import namespace="System.Linq" #><#+
 
-// EFDesigner v1.3.0.4
+// EFDesigner v1.3.0.5
 // Copyright (c) 2017-2019 Michael Sawczyn
 // https://github.com/msawczyn/EFDesigner
 
@@ -536,16 +536,16 @@ void WriteDbContextEF6(ModelRoot modelRoot)
                      {
                         segments.Add("Map(x => { " +
                            $@"x.ToTable(""{association.Source.Name}_x_{association.TargetPropertyName}""); " + 
-                           $@"x.MapLeftKey(""{association.Source.Name}_{association.Source.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
-                           $@"x.MapRightKey(""{association.Target.Name}_{association.Target.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
+                           $@"x.MapLeftKey(""{association.Source.Name}{association.Source.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
+                           $@"x.MapRightKey(""{association.Target.Name}{association.Target.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
                            "})");
                      }
                      else
                      {
                         segments.Add("Map(x => { " +
                            $@"x.ToTable(""{association.Source.Name}_x_{association.TargetPropertyName}""); " + 
-                           $@"x.MapRightKey(""{association.Source.Name}_{association.Source.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
-                           $@"x.MapLeftKey(""{association.Target.Name}_{association.Target.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
+                           $@"x.MapRightKey(""{association.Source.Name}{association.Source.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
+                           $@"x.MapLeftKey(""{association.Target.Name}{association.Target.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
                            "})");
                      }
                   }
@@ -634,20 +634,26 @@ void WriteDbContextEF6(ModelRoot modelRoot)
                   segments.Add($"WithMany(x => x.{association.TargetPropertyName})");
                   if (association.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany)
                   {
+                     string leftKey;
+                     string rightKey;
                      if (modelClass == association.Source)
                      {
+                        leftKey = association.ForeignKeyColumnName == "(default)" ? $"{association.Source.Name}{association.Source.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}" : association.ForeignKeyColumnName;
+                        rightKey= association.ForeignKeyColumnName2 == "(default)" ? $"{association.Target.Name}{association.Target.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}" : association.ForeignKeyColumnName2;
                         segments.Add("Map(x => { " +
                            $@"x.ToTable(""{association.SourcePropertyName}_x_{association.TargetPropertyName}""); " + 
-                           $@"x.MapLeftKey(""{association.Source.Name}_{association.Source.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
-                           $@"x.MapRightKey(""{association.Target.Name}_{association.Target.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
+                           $@"x.MapLeftKey(""{leftKey}""); " +
+                           $@"x.MapRightKey(""{rightKey}""); " +
                            "})");
                      }
                      else
                      {
+                        rightKey = association.ForeignKeyColumnName == "(default)" ? $"{association.Source.Name}{association.Source.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}" : association.ForeignKeyColumnName;
+                        leftKey= association.ForeignKeyColumnName2 == "(default)" ? $"{association.Target.Name}{association.Target.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}" : association.ForeignKeyColumnName2;
                         segments.Add("Map(x => { " +
                            $@"x.ToTable(""{association.SourcePropertyName}_x_{association.TargetPropertyName}""); " + 
-                           $@"x.MapRightKey(""{association.Source.Name}_{association.Source.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
-                           $@"x.MapLeftKey(""{association.Target.Name}_{association.Target.AllAttributes.FirstOrDefault(a => a.IsIdentity)?.Name}""); " +
+                           $@"x.MapRightKey(""{rightKey}""); " +
+                           $@"x.MapLeftKey(""{leftKey}""); " +
                            "})");
                      }
                   }
@@ -718,26 +724,35 @@ void WriteDbContextEF6(ModelRoot modelRoot)
 
 string CreateForeignKeyColumnSegmentEF6(Association association, List<string> foreignKeyColumns)
 {
+   if (association.SourceRole != EndpointRole.Dependent && association.TargetRole != EndpointRole.Dependent) return null;
+
    // foreign key definitions always go in the table representing the Dependent end of the association
    // if there is no dependent end (i.e., many-to-many), there are no foreign keys
    string nameBase = string.Empty;
+   string columnName;
 
-   if (association.SourceRole == EndpointRole.Dependent)
-      nameBase = association.TargetPropertyName;
-   else if (association.TargetRole == EndpointRole.Dependent)
-      nameBase = association is BidirectionalAssociation b ? b.SourcePropertyName :  $"{association.Source.Name}.{association.TargetPropertyName}";
-   else
-      return null;
-
-   string columnName = $"{nameBase}_Id";
-   if (foreignKeyColumns.Contains(columnName))
+   if (association.ForeignKeyColumnName == "(default)")
    {
-      int index = 0;
-      do
+      if (association.SourceRole == EndpointRole.Dependent)
+         nameBase = association.TargetPropertyName;
+      else 
+         nameBase = association is BidirectionalAssociation b ? b.SourcePropertyName :  $"{association.Source.Name}.{association.TargetPropertyName}";
+      
+      string columnName = $"{nameBase}Id";
+      if (foreignKeyColumns.Contains(columnName))
       {
-         columnName = $"{nameBase}{++index}_Id";
-      } while (foreignKeyColumns.Contains(columnName));
+         int index = 0;
+         do
+         {
+            columnName = $"{nameBase}{++index}Id";
+         } while (foreignKeyColumns.Contains(columnName));
+      }
    }
+   else
+   {
+      columnName = association.ForeignKeyColumnName;
+   }
+
    foreignKeyColumns.Add(columnName);
    return $@"Map(x => x.MapKey(""{columnName}""))";
 }

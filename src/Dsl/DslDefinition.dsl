@@ -917,6 +917,11 @@
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>
         </DomainProperty>
+        <DomainProperty Id="a41a4add-6a0a-457f-8d55-194cde3b5cc8" Description="The name of the foreign key column in the dependent table. Need not be present in the dependent class." Name="ForeignKeyColumnName" DisplayName="Foreign Key Column Name" DefaultValue="(default)" Category="Database">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
       </Properties>
       <Source>
         <DomainRole Id="d2edf927-64c2-4fe3-8d4e-c44e87142c4c" Description="" Name="Source" DisplayName="Source" PropertyName="Targets" PropertyDisplayName="Targets">
@@ -1051,6 +1056,11 @@
         <DomainProperty Id="9b6ff495-8b09-434d-9bcc-411afd7e94d5" Description="If false, generates a backing field with a partial method to hook getting and setting the property. If true, generates a simple auto property." Name="SourceAutoProperty" DisplayName="Source Auto Property" DefaultValue="true" Category="End 1">
           <Type>
             <ExternalTypeMoniker Name="/System/Boolean" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="a2a95be0-5760-4e50-a2bd-af8d5897597f" Description="The name of the foreign key column in the second joined table." Name="ForeignKeyColumnName2" DisplayName="Foreign Key 2 Column Name" DefaultValue="(default)" Category="Database">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
       </Properties>
@@ -1592,6 +1602,9 @@
           <XmlPropertyData XmlName="targetAutoProperty">
             <DomainPropertyMoniker Name="Association/TargetAutoProperty" />
           </XmlPropertyData>
+          <XmlPropertyData XmlName="foreignKeyColumnName">
+            <DomainPropertyMoniker Name="Association/ForeignKeyColumnName" />
+          </XmlPropertyData>
         </ElementData>
       </XmlClassData>
       <XmlClassData TypeName="ClassHasAttributes" MonikerAttributeName="" SerializeId="true" MonikerElementName="classHasAttributesMoniker" ElementName="classHasAttributes" MonikerTypeName="ClassHasAttributesMoniker">
@@ -1919,6 +1932,9 @@
           </XmlPropertyData>
           <XmlPropertyData XmlName="sourceAutoProperty">
             <DomainPropertyMoniker Name="BidirectionalAssociation/SourceAutoProperty" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="foreignKeyColumnName2">
+            <DomainPropertyMoniker Name="BidirectionalAssociation/ForeignKeyColumnName2" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>

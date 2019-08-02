@@ -1760,6 +1760,96 @@ namespace Sawczyn.EFDesigner.EFModel
 		}
 		
 		#endregion
+		#region ForeignKeyColumnName domain property code
+		
+		/// <summary>
+		/// ForeignKeyColumnName domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ForeignKeyColumnNameDomainPropertyId = new global::System.Guid(0xa41a4add, 0x6a0a, 0x457f, 0x8d, 0x55, 0x19, 0x4c, 0xde, 0x3b, 0x5c, 0xc8);
+		
+		/// <summary>
+		/// Storage for ForeignKeyColumnName
+		/// </summary>
+		private global::System.String foreignKeyColumnNamePropertyStorage = "(default)";
+		
+		/// <summary>
+		/// Gets or sets the value of ForeignKeyColumnName domain property.
+		/// The name of the foreign key column in the dependent table. Need not be present
+		/// in the dependent class.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Sawczyn.EFDesigner.EFModel.Association/ForeignKeyColumnName.DisplayName", typeof(global::Sawczyn.EFDesigner.EFModel.EFModelDomainModel), "Sawczyn.EFDesigner.EFModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("Sawczyn.EFDesigner.EFModel.Association/ForeignKeyColumnName.Category", typeof(global::Sawczyn.EFDesigner.EFModel.EFModelDomainModel), "Sawczyn.EFDesigner.EFModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Sawczyn.EFDesigner.EFModel.Association/ForeignKeyColumnName.Description", typeof(global::Sawczyn.EFDesigner.EFModel.EFModelDomainModel), "Sawczyn.EFDesigner.EFModel.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("(default)")]
+		[DslModeling::DomainObjectId("a41a4add-6a0a-457f-8d55-194cde3b5cc8")]
+		public global::System.String ForeignKeyColumnName
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return foreignKeyColumnNamePropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ForeignKeyColumnNamePropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the Association.ForeignKeyColumnName domain property.
+		/// </summary>
+		internal sealed partial class ForeignKeyColumnNamePropertyHandler : DslModeling::DomainPropertyValueHandler<Association, global::System.String>
+		{
+			private ForeignKeyColumnNamePropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the Association.ForeignKeyColumnName domain property value handler.
+			/// </summary>
+			public static readonly ForeignKeyColumnNamePropertyHandler Instance = new ForeignKeyColumnNamePropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the Association.ForeignKeyColumnName domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ForeignKeyColumnNameDomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(Association element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.foreignKeyColumnNamePropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(Association element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.foreignKeyColumnNamePropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
 		#region Source link accessor
 		/// <summary>
 		/// Get the list of Association links to a ModelClass.
@@ -3477,6 +3567,95 @@ namespace Sawczyn.EFDesigner.EFModel
 				{
 					ValueChanging(element, oldValue, newValue);
 					element.sourceAutoPropertyPropertyStorage = newValue;
+					ValueChanged(element, oldValue, newValue);
+				}
+			}
+		}
+		
+		#endregion
+		#region ForeignKeyColumnName2 domain property code
+		
+		/// <summary>
+		/// ForeignKeyColumnName2 domain property Id.
+		/// </summary>
+		public static readonly global::System.Guid ForeignKeyColumnName2DomainPropertyId = new global::System.Guid(0xa2a95be0, 0x5760, 0x4e50, 0xa2, 0xbd, 0xaf, 0x8d, 0x58, 0x97, 0x59, 0x7f);
+		
+		/// <summary>
+		/// Storage for ForeignKeyColumnName2
+		/// </summary>
+		private global::System.String foreignKeyColumnName2PropertyStorage = "(default)";
+		
+		/// <summary>
+		/// Gets or sets the value of ForeignKeyColumnName2 domain property.
+		/// The name of the foreign key column in the second joined table.
+		/// </summary>
+		[DslDesign::DisplayNameResource("Sawczyn.EFDesigner.EFModel.BidirectionalAssociation/ForeignKeyColumnName2.DisplayName", typeof(global::Sawczyn.EFDesigner.EFModel.EFModelDomainModel), "Sawczyn.EFDesigner.EFModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::CategoryResource("Sawczyn.EFDesigner.EFModel.BidirectionalAssociation/ForeignKeyColumnName2.Category", typeof(global::Sawczyn.EFDesigner.EFModel.EFModelDomainModel), "Sawczyn.EFDesigner.EFModel.GeneratedCode.DomainModelResx")]
+		[DslDesign::DescriptionResource("Sawczyn.EFDesigner.EFModel.BidirectionalAssociation/ForeignKeyColumnName2.Description", typeof(global::Sawczyn.EFDesigner.EFModel.EFModelDomainModel), "Sawczyn.EFDesigner.EFModel.GeneratedCode.DomainModelResx")]
+		[global::System.ComponentModel.DefaultValue("(default)")]
+		[DslModeling::DomainObjectId("a2a95be0-5760-4e50-a2bd-af8d5897597f")]
+		public global::System.String ForeignKeyColumnName2
+		{
+			[global::System.Diagnostics.DebuggerStepThrough]
+			get
+			{
+				return foreignKeyColumnName2PropertyStorage;
+			}
+			[global::System.Diagnostics.DebuggerStepThrough]
+			set
+			{
+				ForeignKeyColumnName2PropertyHandler.Instance.SetValue(this, value);
+			}
+		}
+		/// <summary>
+		/// Value handler for the BidirectionalAssociation.ForeignKeyColumnName2 domain property.
+		/// </summary>
+		internal sealed partial class ForeignKeyColumnName2PropertyHandler : DslModeling::DomainPropertyValueHandler<BidirectionalAssociation, global::System.String>
+		{
+			private ForeignKeyColumnName2PropertyHandler() { }
+		
+			/// <summary>
+			/// Gets the singleton instance of the BidirectionalAssociation.ForeignKeyColumnName2 domain property value handler.
+			/// </summary>
+			public static readonly ForeignKeyColumnName2PropertyHandler Instance = new ForeignKeyColumnName2PropertyHandler();
+		
+			/// <summary>
+			/// Gets the Id of the BidirectionalAssociation.ForeignKeyColumnName2 domain property.
+			/// </summary>
+			public sealed override global::System.Guid DomainPropertyId
+			{
+				[global::System.Diagnostics.DebuggerStepThrough]
+				get
+				{
+					return ForeignKeyColumnName2DomainPropertyId;
+				}
+			}
+			
+			/// <summary>
+			/// Gets a strongly-typed value of the property on specified element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <returns>Property value.</returns>
+			public override sealed global::System.String GetValue(BidirectionalAssociation element)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+				return element.foreignKeyColumnName2PropertyStorage;
+			}
+		
+			/// <summary>
+			/// Sets property value on an element.
+			/// </summary>
+			/// <param name="element">Element which owns the property.</param>
+			/// <param name="newValue">New property value.</param>
+			public override sealed void SetValue(BidirectionalAssociation element, global::System.String newValue)
+			{
+				if (element == null) throw new global::System.ArgumentNullException("element");
+		
+				global::System.String oldValue = GetValue(element);
+				if (newValue != oldValue)
+				{
+					ValueChanging(element, oldValue, newValue);
+					element.foreignKeyColumnName2PropertyStorage = newValue;
 					ValueChanged(element, oldValue, newValue);
 				}
 			}

@@ -1082,6 +1082,12 @@
             <xsd:documentation>If false, generates a backing field with a partial method to hook getting and setting the property. If true, generates a simple auto property.</xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
+        <!-- Property: ForeignKeyColumnName -->
+        <xsd:attribute name="foreignKeyColumnName" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the foreign key column in the dependent table. Need not be present in the dependent class.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>
@@ -1298,6 +1304,12 @@
         <xsd:attribute name="sourceAutoProperty" type="xsd:boolean" >
           <xsd:annotation>
             <xsd:documentation>If false, generates a backing field with a partial method to hook getting and setting the property. If true, generates a simple auto property.</xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+        <!-- Property: ForeignKeyColumnName2 -->
+        <xsd:attribute name="foreignKeyColumnName2" type="xsd:string" >
+          <xsd:annotation>
+            <xsd:documentation>The name of the foreign key column in the second joined table.</xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
       </xsd:extension>
