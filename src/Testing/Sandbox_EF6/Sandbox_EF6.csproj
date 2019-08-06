@@ -46,10 +46,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EFModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="IncludeHealth.cs">
+    <Compile Include="IH.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>IncludeHealth.tt</DependentUpon>
+      <DependentUpon>IH.tt</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201907081331255_Initial.cs" />
     <Compile Include="Migrations\201907081331255_Initial.Designer.cs">
@@ -70,9 +70,9 @@
     <None Include="EFModel.efmodel.diagram">
       <DependentUpon>EFModel.efmodel</DependentUpon>
     </None>
-    <None Include="IncludeHealth.efmodel" />
-    <None Include="IncludeHealth.efmodel.diagram">
-      <DependentUpon>IncludeHealth.efmodel</DependentUpon>
+    <None Include="IH.efmodel" />
+    <None Include="IH.efmodel.diagram">
+      <DependentUpon>IH.efmodel</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -80,9 +80,9 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EFModel.cs</LastGenOutput>
     </Content>
-    <Content Include="IncludeHealth.tt">
+    <Content Include="IH.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IncludeHealth.cs</LastGenOutput>
+      <LastGenOutput>IH.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
