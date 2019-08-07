@@ -46,11 +46,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EFModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="IH.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IH.tt</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201907081331255_Initial.cs" />
     <Compile Include="Migrations\201907081331255_Initial.Designer.cs">
       <DependentUpon>201907081331255_Initial.cs</DependentUpon>
@@ -70,19 +65,11 @@
     <None Include="EFModel.efmodel.diagram">
       <DependentUpon>EFModel.efmodel</DependentUpon>
     </None>
-    <None Include="IH.efmodel" />
-    <None Include="IH.efmodel.diagram">
-      <DependentUpon>IH.efmodel</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="EFModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EFModel.cs</LastGenOutput>
-    </Content>
-    <Content Include="IH.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IH.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

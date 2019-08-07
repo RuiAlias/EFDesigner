@@ -738,7 +738,7 @@ string CreateForeignKeyColumnSegmentEF6(Association association, List<string> fo
       else 
          nameBase = association is BidirectionalAssociation b ? b.SourcePropertyName :  $"{association.Source.Name}.{association.TargetPropertyName}";
       
-      string columnName = $"{nameBase}Id";
+      columnName = $"{nameBase}Id";
       if (foreignKeyColumns.Contains(columnName))
       {
          int index = 0;

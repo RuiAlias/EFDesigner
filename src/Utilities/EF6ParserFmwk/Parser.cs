@@ -126,7 +126,7 @@ namespace EF6Parser
             // ReSharper restore UseObjectOrCollectionInitializer
 
             log.Info($"Found unidirectional association {association.SourceClassName}.{association.TargetPropertyName} -> {association.TargetClassName}");
-            log.Info("   " + JsonConvert.SerializeObject(association));
+            log.Info("\n   " + JsonConvert.SerializeObject(association));
 
             result.Add(association);
          }
@@ -166,7 +166,7 @@ namespace EF6Parser
             // ReSharper restore UseObjectOrCollectionInitializer
 
             log.Info($"Found bidirectional association {association.SourceClassName}.{association.TargetPropertyName} <-> {association.TargetClassName}.{association.SourcePropertyTypeName}");
-            log.Info("   " + JsonConvert.SerializeObject(association));
+            log.Info("\n   " + JsonConvert.SerializeObject(association));
 
             result.Add(association);
          }
@@ -329,7 +329,7 @@ namespace EF6Parser
                               , TableName = GetTableName(type, dbContext)
                              };
 
-         log.Info("   " + JsonConvert.SerializeObject(result));
+         log.Info("\n   " + JsonConvert.SerializeObject(result));
          return result;
       }
 
@@ -370,7 +370,7 @@ namespace EF6Parser
                               , TableName = null
                              };
 
-         log.Info("   " + JsonConvert.SerializeObject(result));
+         log.Info("\n   " + JsonConvert.SerializeObject(result));
          return result;
       }
 
@@ -407,7 +407,7 @@ namespace EF6Parser
 
 
 
-         log.Info("   " + JsonConvert.SerializeObject(result));
+         log.Info("\n   " + JsonConvert.SerializeObject(result));
          return result;
       }
 
@@ -434,7 +434,7 @@ namespace EF6Parser
                                     , MinStringLength = int.TryParse(sSpaceProperty.TypeUsage.Facets.FirstOrDefault(facet => facet.Name == "MinLength")?.Value?.ToString(), out int minLength) ? minLength : 0
                                    };
 
-            log.Info("   " + JsonConvert.SerializeObject(result));
+            log.Info("\n   " + JsonConvert.SerializeObject(result));
             return result;
          }
          catch (InvalidOperationException)
@@ -456,7 +456,7 @@ namespace EF6Parser
          result.EntityContainerName = contextType.Name;
          result.Namespace = contextType.Namespace;
 
-         log.Info("   " + JsonConvert.SerializeObject(result));
+         log.Info("\n   " + JsonConvert.SerializeObject(result));
 
          return result;
       }
