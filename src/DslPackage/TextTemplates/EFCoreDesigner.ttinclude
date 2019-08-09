@@ -572,37 +572,51 @@ string CreateForeignKeyColumnSegmentEFCore(Association association, List<string>
    // foreign key definitions always go in the table representing the Dependent end of the association
    // if there is no dependent end (i.e., many-to-many), there are no foreign keys
    string nameBase = string.Empty;
-   string dependentType = null;
-   string principalType = null;
+   ModelClass dependentClass = association.SourceRole == EndpointRole.Dependent 
+                                  ? association.Source 
+                                  : association.TargetRole == EndpointRole.Dependent 
+                                     ? association.Target 
+                                     : null;
 
-   if (association.SourceRole == EndpointRole.Dependent)
+   string columnName;
+   if (association.ForeignKeyColumnName == "(default)")
    {
-      nameBase = association.TargetPropertyName; 
-      dependentType = association.Source.FullName; 
-      principalType = association.Target.FullName;
-   }
-   else if (association.TargetRole == EndpointRole.Dependent)
-   {
-      nameBase = association is BidirectionalAssociation b ? b.SourcePropertyName :  $"{association.Source.Name}.{association.TargetPropertyName}";
-      dependentType = association.Target.FullName;
-      principalType = association.Source.FullName;
+      if (association.SourceRole == EndpointRole.Dependent)
+      {
+         nameBase = association.TargetPropertyName; 
+      }
+      else if (association.TargetRole == EndpointRole.Dependent)
+      {
+         nameBase = association is BidirectionalAssociation b ? b.SourcePropertyName :  $"{association.Source.Name}.{association.TargetPropertyName}";
+      }
+      else
+         return null;
+   
+      columnName = $"{nameBase}_Id";
+      if (foreignKeyColumns.Contains(columnName))
+      {
+         int index = 0;
+         do
+         {
+            columnName = $"{nameBase}{++index}_Id";
+         } while (foreignKeyColumns.Contains(columnName));
+      }
    }
    else
-      return null;
-
-   string columnName = $"{nameBase}_Id";
-   if (foreignKeyColumns.Contains(columnName))
    {
-      int index = 0;
-      do
-      {
-         columnName = $"{nameBase}{++index}_Id";
-      } while (foreignKeyColumns.Contains(columnName));
+      columnName = association.ForeignKeyColumnName;
    }
+
    foreignKeyColumns.Add(columnName);
    
-   return useGeneric 
-      ? $"HasForeignKey<{dependentType}>(\"{columnName}\")" 
-      : $"HasForeignKey(\"{columnName}\")";
+   ModelAttribute fkAttribute = dependentClass?.Attributes?.FirstOrDefault(a => a.ColumnName == columnName);
+
+   if (fkAttribute == null)
+      return useGeneric 
+         ? $"HasForeignKey<{dependentClass.FullName}>(\"{columnName}\")" 
+         : $"HasForeignKey(\"{columnName}\")";
+
+   return $"HasForeignKey(x => x.{fkAttribute.Name})";
+
 }
 #>
