@@ -259,19 +259,14 @@ namespace Sawczyn.EFDesigner.EFModel
                switch (element.SourceMultiplicity)
                {
                   case Multiplicity.ZeroMany:
-                     if (element.SourceRole != EndpointRole.NotApplicable) element.SourceRole = EndpointRole.NotApplicable;
-                     if (element.TargetRole != EndpointRole.NotApplicable) element.TargetRole = EndpointRole.NotApplicable;
-
+                     element.SourceRole = EndpointRole.NotApplicable;
+                     element.TargetRole = EndpointRole.NotApplicable;
                      return true;
+
                   case Multiplicity.One:
-                     if (element.SourceRole != EndpointRole.Principal) element.SourceRole = EndpointRole.Principal;
-                     if (element.TargetRole != EndpointRole.Dependent) element.TargetRole = EndpointRole.Dependent;
-
-                     return true;
                   case Multiplicity.ZeroOne:
-                     if (element.SourceRole != EndpointRole.Principal) element.SourceRole = EndpointRole.Principal;
-                     if (element.TargetRole != EndpointRole.Dependent) element.TargetRole = EndpointRole.Dependent;
-
+                     element.SourceRole = EndpointRole.Principal;
+                     element.TargetRole = EndpointRole.Dependent;
                      return true;
                }
 
@@ -281,18 +276,13 @@ namespace Sawczyn.EFDesigner.EFModel
                switch (element.SourceMultiplicity)
                {
                   case Multiplicity.ZeroMany:
-                     if (element.SourceRole != EndpointRole.Dependent) element.SourceRole = EndpointRole.Dependent;
-                     if (element.TargetRole != EndpointRole.Principal) element.TargetRole = EndpointRole.Principal;
-
-                     return true;
-                  case Multiplicity.One:
-
-                     return false;
                   case Multiplicity.ZeroOne:
-                     if (element.SourceRole != EndpointRole.Dependent) element.SourceRole = EndpointRole.Dependent;
-                     if (element.TargetRole != EndpointRole.Principal) element.TargetRole = EndpointRole.Principal;
-
+                     element.SourceRole = EndpointRole.Dependent;
+                     element.TargetRole = EndpointRole.Principal;
                      return true;
+
+                  case Multiplicity.One:
+                     break;
                }
 
                break;
@@ -301,18 +291,17 @@ namespace Sawczyn.EFDesigner.EFModel
                switch (element.SourceMultiplicity)
                {
                   case Multiplicity.ZeroMany:
-                     if (element.SourceRole != EndpointRole.Dependent) element.SourceRole = EndpointRole.Dependent;
-                     if (element.TargetRole != EndpointRole.Principal) element.TargetRole = EndpointRole.Principal;
-
+                     element.SourceRole = EndpointRole.Dependent;
+                     element.TargetRole = EndpointRole.Principal;
                      return true;
+
                   case Multiplicity.One:
-                     if (element.SourceRole != EndpointRole.Principal) element.SourceRole = EndpointRole.Principal;
-                     if (element.TargetRole != EndpointRole.Dependent) element.TargetRole = EndpointRole.Dependent;
-
+                     element.SourceRole = EndpointRole.Principal;
+                     element.TargetRole = EndpointRole.Dependent;
                      return true;
-                  case Multiplicity.ZeroOne:
 
-                     return false;
+                  case Multiplicity.ZeroOne:
+                     break;
                }
 
                break;

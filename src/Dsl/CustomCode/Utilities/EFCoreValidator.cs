@@ -91,13 +91,6 @@ namespace Sawczyn.EFDesigner.EFModel
          ModelRoot modelRoot = element.Store.ModelRoot();
          List<string> errorMessages = new List<string>();
 
-         if (modelRoot?.EntityFrameworkVersion > EFVersion.EF6)
-         {
-            if ((element.SourceMultiplicity == Multiplicity.ZeroMany) &&
-                (element.TargetMultiplicity == Multiplicity.ZeroMany))
-               errorMessages.Add($"EFCore does not support many-to-many associations (found one between {element.Source.Name} and {element.Target.Name})");
-         }
-
          return errorMessages;
       }
 

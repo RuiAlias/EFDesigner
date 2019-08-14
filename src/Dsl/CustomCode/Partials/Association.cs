@@ -33,54 +33,6 @@ namespace Sawczyn.EFDesigner.EFModel
          return "?";
       }
 
-      //internal static (EndpointRole sourceRole, EndpointRole targetRole)? GetEndpointRoles(Multiplicity sourceMultiplicity, Multiplicity targetMultiplicity)
-      //{
-      //   switch (targetMultiplicity)
-      //   {
-      //      case Multiplicity.ZeroMany:
-
-      //         switch (sourceMultiplicity)
-      //         {
-      //            case Multiplicity.ZeroMany:
-      //               return (EndpointRole.NotApplicable, EndpointRole.NotApplicable);
-      //            case Multiplicity.One:
-      //               return (EndpointRole.Principal, EndpointRole.Dependent);
-      //            case Multiplicity.ZeroOne:
-      //               return (EndpointRole.Principal, EndpointRole.Dependent);
-      //         }
-
-      //         break;
-      //      case Multiplicity.One:
-
-      //         switch (sourceMultiplicity)
-      //         {
-      //            case Multiplicity.ZeroMany:
-      //               return (EndpointRole.Dependent, EndpointRole.Principal);
-      //            case Multiplicity.One:
-      //               return null; // must be manually set
-      //            case Multiplicity.ZeroOne:
-      //               return (EndpointRole.Dependent, EndpointRole.Principal);
-      //         }
-
-      //         break;
-      //      case Multiplicity.ZeroOne:
-
-      //         switch (sourceMultiplicity)
-      //         {
-      //            case Multiplicity.ZeroMany:
-      //               return (EndpointRole.Dependent, EndpointRole.Principal);
-      //            case Multiplicity.One:
-      //               return (EndpointRole.Principal, EndpointRole.Dependent);
-      //            case Multiplicity.ZeroOne:
-      //               return null; // must be manually set
-      //         }
-
-      //         break;
-      //   }
-
-      //   return null;
-      //}
-
 
       #region Warning display
 
