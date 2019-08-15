@@ -16,6 +16,16 @@ void NL()
    WriteLine(string.Empty);
 }
 
+void WriteLine(List<string> segments, bool chop)
+{
+   if (chop) 
+      OutputChopped(segments);
+   else
+      Output(string.Join(".", segments) + ";");
+
+   segments.Clear();
+}
+
 string[] NonNullableTypes 
 {
    get
@@ -582,8 +592,18 @@ void WriteConstructor(ModelClass modelClass)
             Output($"this.{navigationProperty.PropertyName} = new {navigationProperty.ClassType.FullName}();");
          else
          {
-            string collectionType = GetFullContainerName(navigationProperty.AssociationObject.CollectionClass,
-                                                       navigationProperty.ClassType.FullName);
+            string collectionType;
+            if (modelClass.ModelRoot.EntityFrameworkVersion == EFVersion.EFCore &&
+                navigationProperty.AssociationObject.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany &&
+                navigationProperty.AssociationObject.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany)
+            {
+               collectionType = 
+                  $"global::{modelClass.ModelRoot.Namespace}.NavigationProperty<{navigationProperty.ClassType.FullName}, {navigationProperty.AssociationObject.Source.FullName}, {navigationProperty.AssociationObject.Target.FullName}, {GetJoinClassName(navigationProperty.AssociationObject)}>(this, ???)";
+            }
+            else
+            {
+               collectionType = GetFullContainerName(navigationProperty.AssociationObject.CollectionClass, navigationProperty.ClassType.FullName);
+            }
             Output($"this.{navigationProperty.PropertyName} = new {collectionType}();");
          }
       }

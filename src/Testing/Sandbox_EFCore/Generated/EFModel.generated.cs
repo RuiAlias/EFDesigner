@@ -29,7 +29,7 @@ namespace Sandbox_EFCore
       /// <summary>
       /// Default connection string
       /// </summary>
-      public static string ConnectionString { get; set; } = @"Data Source=.;Initial Catalog=Sandbox;Integrated Security=True";
+      public static string ConnectionString { get; set; } = @"Data Source=.\sqlexpress;Initial Catalog=N2N;Integrated Security=True";
 
       /// <inheritdoc />
       public EFModel(DbContextOptions<EFModel> options) : base(options)
@@ -57,14 +57,17 @@ namespace Sandbox_EFCore
 
          modelBuilder.Entity<global::Sandbox_EFCore.PressRelease>().ToTable("PressReleases").HasKey(t => t.Id);
          modelBuilder.Entity<global::Sandbox_EFCore.PressRelease>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease>().Ignore(x => x.PressReleaseDetails);
 
          modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetails_x_PressRelease>().ToTable("PressRelease_PressReleaseDetails_x_PressRelease").HasKey(t => new { t.LHS_Id, t.RHS_Id });
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetails_x_PressRelease>().HasOne(x => x.LHS).WithMany(x => x.PressReleaseDetails).HasForeignKey(x => x.LHS_Id).IsRequired();
+         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetails_x_PressRelease>().HasOne(x => x.LHS).WithMany().HasForeignKey(x => x.LHS_Id).IsRequired();
          modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetails_x_PressRelease>().HasOne(x => x.RHS).WithMany().HasForeignKey(x => x.RHS_Id).IsRequired();
+         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease>().Ignore(x => x.PressReleaseDetailHistory);
+         modelBuilder.Entity<global::Sandbox_EFCore.PressReleaseDetail>().Ignore(x => x.PressReleases);
 
          modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>().ToTable("PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases").HasKey(t => new { t.LHS_Id, t.RHS_Id });
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>().HasOne(x => x.LHS).WithMany(x => x.PressReleaseDetailHistory).HasForeignKey(x => x.LHS_Id).IsRequired();
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>().HasOne(x => x.RHS).WithMany(x => x.PressReleases).HasForeignKey(x => x.RHS_Id).IsRequired();
+         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>().HasOne(x => x.LHS).WithMany().HasForeignKey(x => x.LHS_Id).IsRequired();
+         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>().HasOne(x => x.RHS).WithMany().HasForeignKey(x => x.RHS_Id).IsRequired();
 
          modelBuilder.Entity<global::Sandbox_EFCore.PressReleaseDetail>().ToTable("PressReleaseDetails").HasKey(t => t.Id);
          modelBuilder.Entity<global::Sandbox_EFCore.PressReleaseDetail>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();

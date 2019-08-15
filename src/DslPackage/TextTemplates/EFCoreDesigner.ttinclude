@@ -15,30 +15,35 @@ void GenerateEFCore(Manager manager, ModelRoot modelRoot)
 {
    // Entities
 
+   string dir = modelRoot.EntityOutputDirectory;
+   manager.StartNewFile(Path.Combine(dir, $"BidirectionalAssociationHelper.cs"));
+   WriteBidirectionalUtilityFile(modelRoot);
+
    foreach (ModelClass modelClass in modelRoot.Classes)
    {
-      string dir = modelClass.IsDependentType ? modelRoot.StructOutputDirectory : modelRoot.EntityOutputDirectory;
+      dir = modelClass.IsDependentType ? modelRoot.StructOutputDirectory : modelRoot.EntityOutputDirectory;
       if (!string.IsNullOrEmpty(modelClass.OutputDirectory)) dir = modelClass.OutputDirectory;
       manager.StartNewFile(Path.Combine(dir, $"{modelClass.Name}.{modelRoot.FileNameMarker}.cs"));
       WriteClass(modelClass);
+
+	   // Shadowed join entities
+
+	   foreach (Association association in Association.GetLinksToSources(modelClass)
+													  .Where(x => x.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany &&
+																     x.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany))
+	   {
+		  dir = modelRoot.EntityOutputDirectory;
+		  manager.StartNewFile(Path.Combine(dir, $"{GetJoinClassName(association)}.{modelRoot.FileNameMarker}.cs"));
+		  WriteJoinClass(association);
+	   }
    }
 
-   // Shadowed join entities
-
-   foreach (Association association in Association.GetLinksToSources(modelClass)
-                                                  .Where(x => x.TargetMultiplicity != Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany || 
-                                                              x.SourceMultiplicity != Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany))
-   {
-      string dir = modelRoot.EntityOutputDirectory;
-      manager.StartNewFile(Path.Combine(dir, $"{GetJoinClassName(association)}.{modelRoot.FileNameMarker}.cs"));
-      WriteJoinClass(association);
-   }
 
    // Enums
 
    foreach (ModelEnum modelEnum in modelRoot.Enums)
    {
-      string dir = !string.IsNullOrEmpty(modelEnum.OutputDirectory) ? modelEnum.OutputDirectory : modelRoot.EnumOutputDirectory;
+      dir = !string.IsNullOrEmpty(modelEnum.OutputDirectory) ? modelEnum.OutputDirectory : modelRoot.EnumOutputDirectory;
       manager.StartNewFile(Path.Combine(dir, $"{modelEnum.Name}.{modelRoot.FileNameMarker}.cs"));
       WriteEnum(modelEnum);
    }
@@ -195,11 +200,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
    {
       segments.Insert(0, "optionsBuilder");
 
-      if (modelRoot.ChopMethodChains)
-         OutputChopped(segments);
-      else
-         Output(string.Join(".", segments) + ";");
-      
+      WriteLine(segments, modelRoot.ChopMethodChains);
       NL();
    }
 
@@ -260,12 +261,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
       }
 
       if (segments.Count > 1)
-      {
-         if (modelRoot.ChopMethodChains)
-            OutputChopped(segments);
-         else
-            Output(string.Join(".", segments) + ";");
-      }
+         WriteLine(segments, modelRoot.ChopMethodChains);
 
      // indexed properties
       foreach (ModelAttribute indexed in modelClass.Attributes.Where(x => x.Indexed && !x.IsIdentity))
@@ -274,12 +270,10 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
          string attributeName = !indexed.AutoProperty ? $"_{indexed.Name}" : indexed.Name;
          segments.Add($"modelBuilder.Entity<{modelClass.FullName}>().HasIndex(t => t.{attributeName})");
 
-         if (indexed.IndexedUnique) segments.Add("IsUnique()");
+         if (indexed.IndexedUnique) 
+            segments.Add("IsUnique()");
 
-         if (modelRoot.ChopMethodChains)
-            OutputChopped(segments);
-         else
-            Output(string.Join(".", segments) + ";");
+         WriteLine(segments, modelRoot.ChopMethodChains);
      }
 
       // attribute level
@@ -318,10 +312,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
             segments.Insert(0, $"modelBuilder.{(modelClass.IsDependentType ? "Owned" : "Entity")}<{modelClass.FullName}>()");
             segments.Insert(1, $"Property(t => t.{modelAttribute.Name})");
 
-            if (modelRoot.ChopMethodChains)
-               OutputChopped(segments);
-            else
-               Output(string.Join(".", segments) + ";");
+            WriteLine(segments, modelRoot.ChopMethodChains);
          }
       }
 
@@ -421,10 +412,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
             }
          }
 
-         if (modelRoot.ChopMethodChains)
-            OutputChopped(segments);
-         else
-            Output(string.Join(".", segments) + ";");
+         WriteLine(segments, modelRoot.ChopMethodChains);
       }
 
       // ****************************************************************
@@ -531,10 +519,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
             }
          }
 
-         if (modelRoot.ChopMethodChains)
-            OutputChopped(segments);
-         else
-            Output(string.Join(".", segments) + ";");
+         WriteLine(segments, modelRoot.ChopMethodChains);
       }
 
       // ****************************************************************
@@ -547,9 +532,21 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
          if (visited.Contains(association)) continue;
          visited.Add(association);
 
+         segments.Clear();
+         segments.Add($"modelBuilder.Entity<{association.Source.FullName}>()");
+         segments.Add($"Ignore(x => x.{association.TargetPropertyName})");
+         WriteLine(segments, modelRoot.ChopMethodChains);
+
+         if (association is BidirectionalAssociation b)
+         {
+            segments.Add($"modelBuilder.Entity<{b.Target.FullName}>()");
+            segments.Add($"Ignore(x => x.{b.SourcePropertyName})");
+            WriteLine(segments, modelRoot.ChopMethodChains);
+         }
+         NL();
+
          string joinClassName = GetJoinClassName(association);
 
-         segments.Clear();
          segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
          segments.Add($"ToTable(\"{joinClassName}\")");
 
@@ -558,17 +555,11 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
          List<string> keyNames = lhsKeyNames.Union(rhsKeyNames).ToList();
          segments.Add($"HasKey(t => new {{ t.{string.Join(", t.", keyNames)} }})");
 
-         NL();
+         WriteLine(segments, modelRoot.ChopMethodChains);
 
-         if (modelRoot.ChopMethodChains)
-            OutputChopped(segments);
-         else
-            Output(string.Join(".", segments) + ";");
-
-         segments.Clear();
          segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
          segments.Add($"HasOne(x => x.LHS)");
-         segments.Add($"WithMany(x => x.{association.TargetPropertyName})");
+         segments.Add($"WithMany()");
 
          if (lhsKeyNames.Count == 1)
             segments.Add($"HasForeignKey(x => x.{lhsKeyNames[0]})");
@@ -577,19 +568,11 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
 
          segments.Add($"IsRequired()");
 
-         if (modelRoot.ChopMethodChains)
-            OutputChopped(segments);
-         else
-            Output(string.Join(".", segments) + ";");
+         WriteLine(segments, modelRoot.ChopMethodChains);
 
-         segments.Clear();
          segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
          segments.Add($"HasOne(x => x.RHS)");
-
-         if (association is BidirectionalAssociation b)
-            segments.Add($"WithMany(x => x.{b.SourcePropertyName})");
-         else
-            segments.Add($"WithMany()");
+         segments.Add($"WithMany()");
 
          if (rhsKeyNames.Count == 1)
             segments.Add($"HasForeignKey(x => x.{rhsKeyNames[0]})");
@@ -598,10 +581,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
 
          segments.Add($"IsRequired()");
 
-         if (modelRoot.ChopMethodChains)
-            OutputChopped(segments);
-         else
-            Output(string.Join(".", segments) + ";");
+         WriteLine(segments, modelRoot.ChopMethodChains);
       }
    }
    
@@ -643,11 +623,18 @@ void WriteJoinClass(Association association)
    BeginNamespace(association.Source.ModelRoot.Namespace);
 
    Output("/// <summary>");
-   Output($"/// Class linking many-to-many association between {association.Source}.{association.TargetPropertyName} and {association.Target}.{association.SourcePropertyName}");
+   if (association is BidirectionalAssociation bidirectional)
+   {
+      Output($"/// Class linking many-to-many association between {association.Source}.{association.TargetPropertyName} and {association.Target}.{bidirectional.SourcePropertyName}");
+   }
+   else
+   {
+      Output($"/// Class linking many-to-many association between {association.Source}.{association.TargetPropertyName} and {association.Target}");
+   }
    Output("/// </summary>");
 
    string joinClassName = GetJoinClassName(association);
-   Output($"public sealed class {modelClass.Name}: IJoin<{association.Source}, {association.Target}>, IEquatable<{joinClassName}>");
+   Output($"public sealed class {joinClassName}: IJoin<{association.Source.FullName}, {association.Target.FullName}>, IEquatable<{joinClassName}>");
    Output("{");
 
    Output($"public {joinClassName}()");
@@ -659,17 +646,17 @@ void WriteJoinClass(Association association)
    List<ModelAttribute> rhsKeys = association.Target.IdentityAttributes.ToList();
    List<ModelAttribute> keys = lhsKeys.Union(rhsKeys).ToList();
 
-   Output($"public global::{association.Source.FullName} LHS { get; set; }");
+   Output($"public {association.Source.FullName} LHS {{ get; set; }}");
    foreach (ModelAttribute key in lhsKeys)
    {
-      Output($"public {key.Type} LHS_{key.Name} { get; set; }");
+      Output($"public {key.Type} LHS_{key.Name} {{ get; set; }}");
    }
    NL();
 
-   Output($"public global::{association.Target.FullName} RHS { get; set; }");
+   Output($"public {association.Target.FullName} RHS {{ get; set; }}");
    foreach (ModelAttribute key in rhsKeys)
    {
-      Output($"public {key.Type} RHS_{key.Name} { get; set; }");
+      Output($"public {key.Type} RHS_{key.Name} {{ get; set; }}");
    }
    NL();
 
@@ -739,6 +726,165 @@ void WriteJoinClass(Association association)
 
    EndNamespace(association.Source.ModelRoot.Namespace);
    NL();
+}
+
+void WriteBidirectionalUtilityFile(ModelRoot modelRoot)
+{
+   Output("using System;");
+   Output("using System.Collections;");
+   Output("using System.Collections.Generic;");
+   Output("using System.Linq;");
+   NL();
+
+   BeginNamespace(modelRoot.Namespace);
+
+   Output($"public interface IJoin<L,R> where L: class");
+   Output($"                            where R: class");
+   Output("{");
+   Output($"L LHS {{ get; set; }}");
+   Output($"R RHS {{ get; set; }}");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>");
+   Output($"/// Implements bidirectional association");
+   Output($"/// </summary>");
+   Output($"/// <typeparam name=\"T\">Types contained by this collection</typeparam>");
+   Output($"/// <typeparam name=\"L\">First type listed in IJoin&lt;L,R&gt;</typeparam>");
+   Output($"/// <typeparam name=\"R\">Second type listed in IJoin&lt;L,R&gt;</typeparam>");
+   Output($"/// <typeparam name=\"J\">Join object</typeparam>");
+   Output($"public class NavigationProperty<T,L,R,J> : ICollection<T> where J : IJoin<L,R>, new() ");
+   Output($"                                                          where L : class");
+   Output($"                                                          where R : class");
+   Output($"                                                          where T : class");
+   Output("{");
+   Output($"private readonly ICollection<J> Joins;");
+   Output($"private readonly L OwnerL;");
+   Output($"private readonly R OwnerR;");
+   Output($"private readonly bool IsLCollection;");
+   NL();
+
+   Output($"public NavigationProperty(L owner, ICollection<J> joins)");
+   Output("{");
+   Output($"Joins = joins;");
+   Output($"OwnerL = owner;");
+   Output($"IsLCollection = typeof(T) == typeof(L);");
+   Output("}");
+   NL();
+
+   Output($"public NavigationProperty(R owner, ICollection<J> joins)");
+   Output("{");
+   Output($"Joins = joins;");
+   Output($"OwnerR = owner;");
+   Output($"IsLCollection = typeof(T) == typeof(L);");
+   Output("}");
+   NL();
+
+   Output($"private ICollection<T> Entities");
+   Output("{");
+   Output($"get");
+   Output("{");
+   Output($"if (!Joins.Any()) return new List<T>();");
+   NL();
+
+   Output($"return IsLCollection");
+   Output($"          ? Joins.Select(x => x.LHS).Cast<T>().ToList()");
+   Output($"          : Joins.Select(x => x.RHS).Cast<T>().ToList();");
+   Output("}");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>Returns an enumerator that iterates through the collection.</summary>");
+   Output($"/// <returns>An enumerator that can be used to iterate through the collection.</returns>");
+   Output($"public IEnumerator<T> GetEnumerator()");
+   Output("{");
+   Output($"return Entities.GetEnumerator();");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>Returns an enumerator that iterates through a collection.</summary>");
+   Output($"/// <returns>An <see cref=\"T:System.Collections.IEnumerator\" /> object that can be used to iterate through the collection.</returns>");
+   Output($"IEnumerator IEnumerable.GetEnumerator()");
+   Output("{");
+   Output($"return GetEnumerator();");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>Adds an item to the <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</summary>");
+   Output($"/// <param name=\"item\">The object to add to the <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</param>");
+   Output($"/// <exception cref=\"T:System.NotSupportedException\">The <see cref=\"T:System.Collections.Generic.ICollection`1\" /> is read-only.</exception>");
+   Output($"public void Add(T item)");
+   Output("{");
+   Output($"if (Entities.All(obj => obj != item))");
+   Output("{");
+   Output($"Joins.Add(IsLCollection");
+   Output($"             ? new J {{RHS = OwnerR, LHS = item as L}}");
+   Output($"             : new J {{LHS = OwnerL, RHS = item as R}});");
+   Output("}");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>Removes all items from the <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</summary>");
+   Output($"/// <exception cref=\"T:System.NotSupportedException\">The <see cref=\"T:System.Collections.Generic.ICollection`1\" /> is read-only. </exception>");
+   Output($"public void Clear()");
+   Output("{");
+   Output($"Joins.Clear();");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>Determines whether the <see cref=\"T:System.Collections.Generic.ICollection`1\" /> contains a specific value.</summary>");
+   Output($"/// <param name=\"item\">The object to locate in the <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</param>");
+   Output($"/// <returns>");
+   Output($"/// <see langword=\"true\" /> if <paramref name=\"item\" /> is found in the <see cref=\"T:System.Collections.Generic.ICollection`1\" />; otherwise, <see langword=\"false\" />.</returns>");
+   Output($"public bool Contains(T item)");
+   Output("{");
+   Output($"return Entities.Any(x => x == item);");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>Copies the elements of the <see cref=\"T:System.Collections.Generic.ICollection`1\" /> to an <see cref=\"T:System.Array\" />, starting at a particular <see cref=\"T:System.Array\" /> index.</summary>");
+   Output($"/// <param name=\"array\">The one-dimensional <see cref=\"T:System.Array\" /> that is the destination of the elements copied from <see cref=\"T:System.Collections.Generic.ICollection`1\" />. The <see cref=\"T:System.Array\" /> must have zero-based indexing.</param>");
+   Output($"/// <param name=\"arrayIndex\">The zero-based index in <paramref name=\"array\" /> at which copying begins.</param>");
+   Output($"/// <exception cref=\"T:System.ArgumentNullException\">");
+   Output($"/// <paramref name=\"array\" /> is <see langword=\"null\" />.</exception>");
+   Output($"/// <exception cref=\"T:System.ArgumentOutOfRangeException\">");
+   Output($"/// <paramref name=\"arrayIndex\" /> is less than 0.</exception>");
+   Output($"/// <exception cref=\"T:System.ArgumentException\">The number of elements in the source <see cref=\"T:System.Collections.Generic.ICollection`1\" /> is greater than the available space from <paramref name=\"arrayIndex\" /> to the end of the destination <paramref name=\"array\" />.</exception>");
+   Output($"public void CopyTo(T[] array, int arrayIndex)");
+   Output("{");
+   Output($"if (array == null) throw new ArgumentNullException(nameof(array));");
+   Output($"if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));");
+   Output($"if (Entities.Count > array.Length - arrayIndex) throw new ArgumentException(\"The number of elements in the source ICollection is greater than the available space from arrayIndex to the end of the destination array\");");
+   NL();
+
+   Output($"int index = arrayIndex;");
+   Output($"foreach (T obj in Entities) array[index++] = obj;");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>Removes the first occurrence of a specific object from the <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</summary>");
+   Output($"/// <param name=\"item\">The object to remove from the <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</param>");
+   Output($"/// <returns>");
+   Output($"/// <see langword=\"true\" /> if <paramref name=\"item\" /> was successfully removed from the <see cref=\"T:System.Collections.Generic.ICollection`1\" />; otherwise, <see langword=\"false\" />. This method also returns <see langword=\"false\" /> if <paramref name=\"item\" /> is not found in the original <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</returns>");
+   Output($"/// <exception cref=\"T:System.NotSupportedException\">The <see cref=\"T:System.Collections.Generic.ICollection`1\" /> is read-only.</exception>");
+   Output($"public bool Remove(T item)");
+   Output("{");
+   Output($"return Joins.Remove(Joins.Single(x => (IsLCollection ? x.LHS as T : x.RHS as T) == item));");
+   Output("}");
+   NL();
+
+   Output($"/// <summary>Gets the number of elements contained in the <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</summary>");
+   Output($"/// <returns>The number of elements contained in the <see cref=\"T:System.Collections.Generic.ICollection`1\" />.</returns>");
+   Output($"public int Count => Joins.Count;");
+   NL();
+
+   Output($"/// <summary>Gets a value indicating whether the <see cref=\"T:System.Collections.Generic.ICollection`1\" /> is read-only.</summary>");
+   Output($"/// <returns>");
+   Output($"/// <see langword=\"true\" /> if the <see cref=\"T:System.Collections.Generic.ICollection`1\" /> is read-only; otherwise, <see langword=\"false\" />.</returns>");
+   Output($"public bool IsReadOnly => false;");
+   Output("}");
+
+   EndNamespace(modelRoot.Namespace);
 }
 
 string CreateForeignKeyColumnSegmentEFCore(Association association, List<string> foreignKeyColumns, bool useGeneric)
