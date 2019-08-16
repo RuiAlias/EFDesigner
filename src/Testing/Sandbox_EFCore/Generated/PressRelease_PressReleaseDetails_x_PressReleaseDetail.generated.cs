@@ -17,9 +17,9 @@ namespace Sandbox_EFCore
    /// <summary>
    /// Class linking many-to-many association between global::Sandbox_EFCore.PressRelease.PressReleaseDetails and Sawczyn.EFDesigner.EFModel.ModelClass
    /// </summary>
-   public sealed class PressRelease_PressReleaseDetails_x_PressRelease : IJoin<global::Sandbox_EFCore.PressRelease>, IJoin<global::Sandbox_EFCore.PressReleaseDetail>, IEquatable<PressRelease_PressReleaseDetails_x_PressRelease>
+   public sealed class PressRelease_PressReleaseDetails_x_PressReleaseDetail : IJoin<global::Sandbox_EFCore.PressRelease>, IJoin<global::Sandbox_EFCore.PressReleaseDetail>, IEquatable<PressRelease_PressReleaseDetails_x_PressReleaseDetail>
    {
-      public PressRelease_PressReleaseDetails_x_PressRelease()
+      public PressRelease_PressReleaseDetails_x_PressReleaseDetail()
       {
       }
 
@@ -52,14 +52,14 @@ namespace Sandbox_EFCore
          if (ReferenceEquals(null, obj)) return false;
          if (ReferenceEquals(this, obj)) return true;
          if (obj.GetType() != this.GetType()) return false;
-         return Equals((PressRelease_PressReleaseDetails_x_PressRelease)obj);
+         return Equals((PressRelease_PressReleaseDetails_x_PressReleaseDetail)obj);
       }
 
       /// <summary>Indicates whether the current object is equal to another object of the same type.</summary>
       /// <param name="other">An object to compare with this object.</param>
       /// <returns>
       /// <see langword="true" /> if the current object is equal to the <paramref name="other" /> parameter; otherwise, <see langword="false" />.</returns>
-      public bool Equals(PressRelease_PressReleaseDetails_x_PressRelease other)
+      public bool Equals(PressRelease_PressReleaseDetails_x_PressReleaseDetail other)
       {
          if (ReferenceEquals(null, other)) return false;
          if (ReferenceEquals(this, other)) return true;
@@ -76,20 +76,20 @@ namespace Sandbox_EFCore
          }
       }
 
-      /// <summary>Returns a value that indicates whether the values of two <see cref="T:Sandbox_EFCorePressRelease_PressReleaseDetails_x_PressRelease" /> objects are equal.</summary>
+      /// <summary>Returns a value that indicates whether the values of two <see cref="T:Sandbox_EFCorePressRelease_PressReleaseDetails_x_PressReleaseDetail" /> objects are equal.</summary>
       /// <param name="left">The first value to compare.</param>
       /// <param name="right">The second value to compare.</param>
       /// <returns>true if the <paramref name="left" /> and <paramref name="right" /> parameters have the same value; otherwise, false.</returns>
-      public static bool operator ==(PressRelease_PressReleaseDetails_x_PressRelease left, PressRelease_PressReleaseDetails_x_PressRelease right)
+      public static bool operator ==(PressRelease_PressReleaseDetails_x_PressReleaseDetail left, PressRelease_PressReleaseDetails_x_PressReleaseDetail right)
       {
          return Equals(left, right);
       }
 
-      /// <summary>Returns a value that indicates whether two <see cref="T:Sandbox_EFCorePressRelease_PressReleaseDetails_x_PressRelease" /> objects have different values.</summary>
+      /// <summary>Returns a value that indicates whether two <see cref="T:Sandbox_EFCorePressRelease_PressReleaseDetails_x_PressReleaseDetail" /> objects have different values.</summary>
       /// <param name="left">The first value to compare.</param>
       /// <param name="right">The second value to compare.</param>
       /// <returns>true if <paramref name="left" /> and <paramref name="right" /> are not equal; otherwise, false.</returns>
-      public static bool operator !=(PressRelease_PressReleaseDetails_x_PressRelease left, PressRelease_PressReleaseDetails_x_PressRelease right)
+      public static bool operator !=(PressRelease_PressReleaseDetails_x_PressReleaseDetail left, PressRelease_PressReleaseDetails_x_PressReleaseDetail right)
       {
          return !Equals(left, right);
       }

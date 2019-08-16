@@ -73,19 +73,8 @@ List<string> GetAdditionalUsingStatementsEFCore(ModelRoot modelRoot)
    return result;
 }
 
-void WriteDbContextEFCore(ModelRoot modelRoot)
+void WriteDbContextSummarCommentsy(ModelRoot modelRoot)
 {
-   List<string> segments = new List<string>();
-
-   Output("using System;");
-   Output("using System.Collections.Generic;");
-   Output("using System.Linq;");
-   Output("using System.ComponentModel.DataAnnotations.Schema;");
-   Output("using Microsoft.EntityFrameworkCore;");
-   NL();
-
-   BeginNamespace(modelRoot.Namespace);
-
    if (!string.IsNullOrEmpty(modelRoot.Summary))
    {
       Output("/// <summary>");
@@ -102,6 +91,20 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
    {
       Output("/// <inheritdoc/>");
    }
+}
+
+void WriteDbContextEFCore(ModelRoot modelRoot)
+{
+   List<string> segments = new List<string>();
+
+   Output("using System;");
+   Output("using System.Collections.Generic;");
+   Output("using System.Linq;");
+   Output("using System.ComponentModel.DataAnnotations.Schema;");
+   Output("using Microsoft.EntityFrameworkCore;");
+   NL();
+
+   BeginNamespace(modelRoot.Namespace);
 
    Output($"{modelRoot.EntityContainerAccess.ToString().ToLower()} partial class {modelRoot.EntityContainerName} : Microsoft.EntityFrameworkCore.DbContext");
    Output("{");
@@ -559,7 +562,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
 
          segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
          segments.Add($"HasOne(x => x.LHS)");
-         segments.Add($"WithMany()");
+         segments.Add($"WithMany(x => x.{joinClassName}_List)");
 
          if (lhsKeyNames.Count == 1)
             segments.Add($"HasForeignKey(x => x.{lhsKeyNames[0]})");
@@ -572,7 +575,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
 
          segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
          segments.Add($"HasOne(x => x.RHS)");
-         segments.Add($"WithMany()");
+         segments.Add($"WithMany(x => x.{joinClassName}_List)");
 
          if (rhsKeyNames.Count == 1)
             segments.Add($"HasForeignKey(x => x.{rhsKeyNames[0]})");
@@ -598,7 +601,7 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
 string GetJoinClassName(Association association) 
 {
    if (association is UnidirectionalAssociation u)
-      return $"{u.Source.Name}_{u.TargetPropertyName}_x_{u.Source.Name}";
+      return $"{u.Source.Name}_{u.TargetPropertyName}_x_{u.Target.Name}";
    if (association is BidirectionalAssociation b)
       return $"{b.Source.Name}_{b.TargetPropertyName}_x_{b.Target.Name}_{b.SourcePropertyName}";
    return null;

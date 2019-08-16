@@ -52,10 +52,10 @@
     <Compile Include="Generated\PressRelease.generated.cs" />
     <Compile Include="Generated\PressReleaseDetail.generated.cs" />
     <Compile Include="Generated\PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases.generated.cs" />
-    <Compile Include="Generated\PressRelease_PressReleaseDetails_x_PressRelease.generated.cs" />
-    <Compile Include="Migrations\20190815040308_Initial.cs" />
-    <Compile Include="Migrations\20190815040308_Initial.designer.cs">
-      <DependentUpon>20190815040308_Initial.cs</DependentUpon>
+    <Compile Include="Generated\PressRelease_PressReleaseDetails_x_PressReleaseDetail.generated.cs" />
+    <Compile Include="Migrations\20190816191835_Initial.cs" />
+    <Compile Include="Migrations\20190816191835_Initial.designer.cs">
+      <DependentUpon>20190816191835_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\EFModelModelSnapshot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
