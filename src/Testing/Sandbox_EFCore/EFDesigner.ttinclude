@@ -407,24 +407,7 @@ void WriteDefaultConstructorBody(ModelClass modelClass)
       ++lineCount;
    }
 
-   foreach (NavigationProperty navigationProperty in modelClass.LocalNavigationProperties()
-                                                               .Where(x => x.AssociationObject.Persistent &&
-                                                                           (x.IsCollection || x.ClassType.IsDependentType) &&
-                                                                           !x.ConstructorParameterOnly))
-   {
-      if (navigationProperty.ClassType.IsDependentType)
-      {
-          Output($"{navigationProperty.PropertyName} = new {navigationProperty.ClassType.FullName}();");
-      }
-      else
-      {
-          string collectionType = GetFullContainerName(navigationProperty.AssociationObject.CollectionClass,
-                                                       navigationProperty.ClassType.FullName);
-          Output($"{navigationProperty.PropertyName} = new {collectionType}();");
-      }
-      
-      ++lineCount;
-   }
+   lineCount += WriteNavigationContainerInitializers(modelClass);
 
    if (lineCount > 0) NL();
    Output("Init();");
@@ -583,30 +566,7 @@ void WriteConstructor(ModelClass modelClass)
          NL();
       }
 
-      foreach (NavigationProperty navigationProperty in modelClass.LocalNavigationProperties()
-                                                                  .Where(x => x.AssociationObject.Persistent &&
-                                                                              (x.IsCollection || x.ClassType.IsDependentType) &&
-                                                                              !x.ConstructorParameterOnly))
-      {
-         if (!navigationProperty.IsCollection)
-            Output($"this.{navigationProperty.PropertyName} = new {navigationProperty.ClassType.FullName}();");
-         else
-         {
-            string collectionType;
-            if (modelClass.ModelRoot.EntityFrameworkVersion == EFVersion.EFCore &&
-                navigationProperty.AssociationObject.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany &&
-                navigationProperty.AssociationObject.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany)
-            {
-               collectionType = 
-                  $"global::{modelClass.ModelRoot.Namespace}.NavigationProperty<{navigationProperty.ClassType.FullName}, {navigationProperty.AssociationObject.Source.FullName}, {navigationProperty.AssociationObject.Target.FullName}, {GetJoinClassName(navigationProperty.AssociationObject)}>(this, ???)";
-            }
-            else
-            {
-               collectionType = GetFullContainerName(navigationProperty.AssociationObject.CollectionClass, navigationProperty.ClassType.FullName);
-            }
-            Output($"this.{navigationProperty.PropertyName} = new {collectionType}();");
-         }
-      }
+      WriteNavigationContainerInitializers(modelClass);
 
       Output("Init();");
       Output("}");
@@ -635,6 +595,44 @@ void WriteConstructor(ModelClass modelClass)
          NL();
       }
    }
+}
+
+int WriteNavigationContainerInitializers(ModelClass modelClass)
+{
+   int lineCount = 0;
+
+   foreach (NavigationProperty navigationProperty in modelClass.LocalNavigationProperties()
+                                                               .Where(x => x.AssociationObject.Persistent &&
+                                                                           x.ClassType.IsDependentType &&
+                                                                           !x.ConstructorParameterOnly))
+   {
+      Output($"{navigationProperty.PropertyName} = new {navigationProperty.ClassType.FullName}();");
+      ++lineCount;
+   }
+
+   foreach (NavigationProperty navigationProperty in modelClass.LocalNavigationProperties()
+                                                               .Where(x => x.AssociationObject.Persistent &&
+                                                                           x.IsCollection &&
+                                                                           !x.ConstructorParameterOnly))
+   {
+      string collectionType;
+      if (modelClass.ModelRoot.EntityFrameworkVersion == EFVersion.EFCore &&
+            navigationProperty.AssociationObject.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany &&
+            navigationProperty.AssociationObject.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany)
+      {
+         collectionType = 
+            $"global::{modelClass.ModelRoot.Namespace}.NavigationProperty<{navigationProperty.ClassType.FullName}, {navigationProperty.AssociationObject.Source.FullName}, {navigationProperty.AssociationObject.Target.FullName}, {GetJoinClassName(navigationProperty.AssociationObject)}>(this, ???)";
+      }
+      else
+      {
+         collectionType = GetFullContainerName(navigationProperty.AssociationObject.CollectionClass, navigationProperty.ClassType.FullName);
+      }
+
+      Output($"{navigationProperty.PropertyName} = new {collectionType}();");
+      ++lineCount;
+   }
+
+   return lineCount;
 }
 
 bool AllSuperclassesAreNullOrAbstract(ModelClass modelClass)
@@ -925,7 +923,13 @@ void WritePersistentNavigationProperties(ModelClass modelClass, bool requireVirt
 
       if (navigationProperty.IsCollection)
       {
-         Output($"public virtual {type} {navigationProperty.PropertyName} {{ get; private set; }}");
+         bool isManyToManyCore = (modelClass.ModelRoot.EntityFrameworkVersion == EFVersion.EFCore &&
+                                  navigationProperty.AssociationObject.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany &&
+                                  navigationProperty.AssociationObject.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany);
+         if (isManyToManyCore)
+            Output("[NotMapped]");
+         
+         Output($"public {type} {navigationProperty.PropertyName} {{ get; private set; }}");
       }
       else if (!modelClass.ImplementNotify && navigationProperty.IsAutoProperty)
       {

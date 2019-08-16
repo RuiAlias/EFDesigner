@@ -30,8 +30,8 @@ namespace Sandbox_EFCore
       /// </summary>
       public PressRelease()
       {
-         PressReleaseDetails = new System.Collections.Generic.HashSet<global::Sandbox_EFCore.PressReleaseDetail>();
-         PressReleaseDetailHistory = new System.Collections.Generic.HashSet<global::Sandbox_EFCore.PressReleaseDetail>();
+         PressReleaseDetails = new global::Sandbox_EFCore.NavigationProperty<global::Sandbox_EFCore.PressReleaseDetail, global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressReleaseDetail, PressRelease_PressReleaseDetails_x_PressRelease>(this, ???)();
+         PressReleaseDetailHistory = new global::Sandbox_EFCore.NavigationProperty<global::Sandbox_EFCore.PressReleaseDetail, global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressReleaseDetail, PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>(this, ???)();
 
          Init();
       }
@@ -51,9 +51,11 @@ namespace Sandbox_EFCore
        * Persistent navigation properties
        *************************************************************************/
 
-      public virtual ICollection<global::Sandbox_EFCore.PressReleaseDetail> PressReleaseDetails { get; private set; }
+      [NotMapped]
+      public ICollection<global::Sandbox_EFCore.PressReleaseDetail> PressReleaseDetails { get; private set; }
 
-      public virtual ICollection<global::Sandbox_EFCore.PressReleaseDetail> PressReleaseDetailHistory { get; private set; }
+      [NotMapped]
+      public ICollection<global::Sandbox_EFCore.PressReleaseDetail> PressReleaseDetailHistory { get; private set; }
 
    }
 }

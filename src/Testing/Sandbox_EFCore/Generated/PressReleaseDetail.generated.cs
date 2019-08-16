@@ -30,7 +30,7 @@ namespace Sandbox_EFCore
       /// </summary>
       public PressReleaseDetail()
       {
-         PressReleases = new System.Collections.Generic.HashSet<global::Sandbox_EFCore.PressRelease>();
+         PressReleases = new global::Sandbox_EFCore.NavigationProperty<global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressReleaseDetail, PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>(this, ???)();
 
          Init();
       }
@@ -50,7 +50,8 @@ namespace Sandbox_EFCore
        * Persistent navigation properties
        *************************************************************************/
 
-      public virtual ICollection<global::Sandbox_EFCore.PressRelease> PressReleases { get; private set; }
+      [NotMapped]
+      public ICollection<global::Sandbox_EFCore.PressRelease> PressReleases { get; private set; }
 
    }
 }
