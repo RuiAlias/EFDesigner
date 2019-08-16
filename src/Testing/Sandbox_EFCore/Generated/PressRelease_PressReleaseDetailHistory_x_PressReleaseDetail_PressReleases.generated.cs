@@ -11,20 +11,13 @@
 //------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Sandbox_EFCore
 {
    /// <summary>
-   /// Class linking many-to-many association between Sawczyn.EFDesigner.EFModel.ModelClass.PressReleaseDetailHistory and Sawczyn.EFDesigner.EFModel.ModelClass.PressReleases
+   /// Class linking many-to-many association between global::Sandbox_EFCore.PressRelease.PressReleaseDetailHistory and global::Sandbox_EFCore.PressReleaseDetail.PressReleases
    /// </summary>
-   public sealed class PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases: IJoin<global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressReleaseDetail>, IEquatable<PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>
+   public sealed class PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases : IJoin<global::Sandbox_EFCore.PressRelease>, IJoin<global::Sandbox_EFCore.PressReleaseDetail>, IEquatable<PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>
    {
       public PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases()
       {
@@ -35,6 +28,18 @@ namespace Sandbox_EFCore
 
       public global::Sandbox_EFCore.PressReleaseDetail RHS { get; set; }
       public Int32 RHS_Id { get; set; }
+
+      global::Sandbox_EFCore.PressRelease IJoin<global::Sandbox_EFCore.PressRelease>.Navigation
+      {
+         get { return LHS; }
+         set { LHS = value; }
+      }
+
+      global::Sandbox_EFCore.PressReleaseDetail IJoin<global::Sandbox_EFCore.PressReleaseDetail>.Navigation
+      {
+         get { return RHS; }
+         set { RHS = value; }
+      }
 
       #region IEquatable
 
@@ -47,7 +52,6 @@ namespace Sandbox_EFCore
          if (ReferenceEquals(null, obj)) return false;
          if (ReferenceEquals(this, obj)) return true;
          if (obj.GetType() != this.GetType()) return false;
-
          return Equals((PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases)obj);
       }
 

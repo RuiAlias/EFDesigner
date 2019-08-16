@@ -621,14 +621,14 @@ int WriteNavigationContainerInitializers(ModelClass modelClass)
             navigationProperty.AssociationObject.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany)
       {
          collectionType = 
-            $"global::{modelClass.ModelRoot.Namespace}.NavigationProperty<{navigationProperty.ClassType.FullName}, {navigationProperty.AssociationObject.Source.FullName}, {navigationProperty.AssociationObject.Target.FullName}, {GetJoinClassName(navigationProperty.AssociationObject)}>(this, ???)";
+            $"global::{modelClass.ModelRoot.Namespace}.NavigationProperty<{navigationProperty.AssociationObject.Source.FullName}, {navigationProperty.AssociationObject.Target.FullName}, {GetJoinClassName(navigationProperty.AssociationObject)}>(this)";
       }
       else
       {
-         collectionType = GetFullContainerName(navigationProperty.AssociationObject.CollectionClass, navigationProperty.ClassType.FullName);
+            collectionType = GetFullContainerName(navigationProperty.AssociationObject.CollectionClass, navigationProperty.ClassType.FullName) + "()";;
       }
 
-      Output($"{navigationProperty.PropertyName} = new {collectionType}();");
+      Output($"{navigationProperty.PropertyName} = new {collectionType};");
       ++lineCount;
    }
 
@@ -926,9 +926,14 @@ void WritePersistentNavigationProperties(ModelClass modelClass, bool requireVirt
          bool isManyToManyCore = (modelClass.ModelRoot.EntityFrameworkVersion == EFVersion.EFCore &&
                                   navigationProperty.AssociationObject.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany &&
                                   navigationProperty.AssociationObject.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany);
+
          if (isManyToManyCore)
+         {
+            string joinClassName = GetJoinClassName(navigationProperty.AssociationObject);
+            Output($"public virtual ICollection<{joinClassName}> {joinClassName}_List {{ get; }} = new HashSet<{joinClassName}>();");
             Output("[NotMapped]");
-         
+         }
+
          Output($"public {type} {navigationProperty.PropertyName} {{ get; private set; }}");
       }
       else if (!modelClass.ImplementNotify && navigationProperty.IsAutoProperty)

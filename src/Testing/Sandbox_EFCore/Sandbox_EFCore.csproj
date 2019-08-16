@@ -47,8 +47,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Generated\BidirectionalAssociationHelper.cs" />
     <Compile Include="Generated\EFModel.generated.cs" />
+    <Compile Include="Generated\NavigationProperty.cs" />
     <Compile Include="Generated\PressRelease.generated.cs" />
     <Compile Include="Generated\PressReleaseDetail.generated.cs" />
     <Compile Include="Generated\PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases.generated.cs" />

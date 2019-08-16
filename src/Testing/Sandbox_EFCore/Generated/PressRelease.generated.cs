@@ -30,8 +30,8 @@ namespace Sandbox_EFCore
       /// </summary>
       public PressRelease()
       {
-         PressReleaseDetails = new global::Sandbox_EFCore.NavigationProperty<global::Sandbox_EFCore.PressReleaseDetail, global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressReleaseDetail, PressRelease_PressReleaseDetails_x_PressRelease>(this, ???)();
-         PressReleaseDetailHistory = new global::Sandbox_EFCore.NavigationProperty<global::Sandbox_EFCore.PressReleaseDetail, global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressReleaseDetail, PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>(this, ???)();
+         PressReleaseDetails = new global::Sandbox_EFCore.NavigationProperty<global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressReleaseDetail, PressRelease_PressReleaseDetails_x_PressRelease>(this);
+         PressReleaseDetailHistory = new global::Sandbox_EFCore.NavigationProperty<global::Sandbox_EFCore.PressRelease, global::Sandbox_EFCore.PressReleaseDetail, PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>(this);
 
          Init();
       }
@@ -51,9 +51,11 @@ namespace Sandbox_EFCore
        * Persistent navigation properties
        *************************************************************************/
 
+      public virtual ICollection<PressRelease_PressReleaseDetails_x_PressRelease> PressRelease_PressReleaseDetails_x_PressRelease_List { get; } = new HashSet<PressRelease_PressReleaseDetails_x_PressRelease>();
       [NotMapped]
       public ICollection<global::Sandbox_EFCore.PressReleaseDetail> PressReleaseDetails { get; private set; }
 
+      public virtual ICollection<PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases> PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases_List { get; } = new HashSet<PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>();
       [NotMapped]
       public ICollection<global::Sandbox_EFCore.PressReleaseDetail> PressReleaseDetailHistory { get; private set; }
 

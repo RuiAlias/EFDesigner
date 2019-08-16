@@ -10,6 +10,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+// Based on the work done at https://github.com/ZBAGI/EntityFramework-ManyToMany/tree/master/EntityFramework-ManyToMany/Relationship
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,61 +18,27 @@ using System.Linq;
 
 namespace Sandbox_EFCore
 {
-   public interface IJoin<L,R> where L: class
-                               where R: class
+   public interface IJoin<TEntity>
    {
-      L LHS { get; set; }
-      R RHS { get; set; }
+      TEntity Navigation { get; set; }
    }
 
-   /// <summary>
-   /// Implements bidirectional association
-   /// </summary>
-   /// <typeparam name="T">Types contained by this collection</typeparam>
-   /// <typeparam name="L">First type listed in IJoin&lt;L,R&gt;</typeparam>
-   /// <typeparam name="R">Second type listed in IJoin&lt;L,R&gt;</typeparam>
-   /// <typeparam name="J">Join object</typeparam>
-   public class NavigationProperty<T,L,R,J> : ICollection<T> where J : IJoin<L,R>, new() 
-                                                             where L : class
-                                                             where R : class
-                                                             where T : class
+   public class NavigationProperty<TOwner, TEntity, TJoin> 
+      : ICollection<TEntity> where TJoin : IJoin<TEntity>, IJoin<TOwner>, new()
    {
-      private readonly ICollection<J> Joins;
-      private readonly L OwnerL;
-      private readonly R OwnerR;
-      private readonly bool IsLCollection;
+      private readonly TOwner OwnerEntity;
+      private ICollection<TJoin> Collection;
 
-      public NavigationProperty(L owner, ICollection<J> joins)
+      public NavigationProperty(TOwner ownerEntity)
       {
-         Joins = joins;
-         OwnerL = owner;
-         IsLCollection = typeof(T) == typeof(L);
-      }
-
-      public NavigationProperty(R owner, ICollection<J> joins)
-      {
-         Joins = joins;
-         OwnerR = owner;
-         IsLCollection = typeof(T) == typeof(L);
-      }
-
-      private ICollection<T> Entities
-      {
-         get
-         {
-            if (!Joins.Any()) return new List<T>();
-
-            return IsLCollection
-                      ? Joins.Select(x => x.LHS).Cast<T>().ToList()
-                      : Joins.Select(x => x.RHS).Cast<T>().ToList();
-         }
+         OwnerEntity = ownerEntity;
       }
 
       /// <summary>Returns an enumerator that iterates through the collection.</summary>
       /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-      public IEnumerator<T> GetEnumerator()
+      public IEnumerator<TEntity> GetEnumerator()
       {
-         return Entities.GetEnumerator();
+         return GetCollection().Select(e => ((IJoin<TEntity>)e).Navigation).GetEnumerator();
       }
 
       /// <summary>Returns an enumerator that iterates through a collection.</summary>
@@ -84,13 +51,14 @@ namespace Sandbox_EFCore
       /// <summary>Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
       /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
       /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
-      public void Add(T item)
+      public void Add(TEntity item)
       {
-         if (Entities.All(obj => obj != item))
+         if (!Contains(item))
          {
-            Joins.Add(IsLCollection
-                         ? new J {RHS = OwnerR, LHS = item as L}
-                         : new J {LHS = OwnerL, RHS = item as R});
+            TJoin entity = new TJoin();
+            ((IJoin<TEntity>)entity).Navigation = item;
+            ((IJoin<TOwner>)entity).Navigation = OwnerEntity;
+            GetCollection().Add(entity);
          }
       }
 
@@ -98,16 +66,16 @@ namespace Sandbox_EFCore
       /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only. </exception>
       public void Clear()
       {
-         Joins.Clear();
+         GetCollection().Clear();
       }
 
       /// <summary>Determines whether the <see cref="T:System.Collections.Generic.ICollection`1" /> contains a specific value.</summary>
       /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
       /// <returns>
       /// <see langword="true" /> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
-      public bool Contains(T item)
+      public bool Contains(TEntity item)
       {
-         return Entities.Any(x => x == item);
+         return GetCollection().Any(e => Equals(item, e));
       }
 
       /// <summary>Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.</summary>
@@ -118,14 +86,12 @@ namespace Sandbox_EFCore
       /// <exception cref="T:System.ArgumentOutOfRangeException">
       /// <paramref name="arrayIndex" /> is less than 0.</exception>
       /// <exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1" /> is greater than the available space from <paramref name="arrayIndex" /> to the end of the destination <paramref name="array" />.</exception>
-      public void CopyTo(T[] array, int arrayIndex)
+      public void CopyTo(TEntity[] array, int arrayIndex)
       {
          if (array == null) throw new ArgumentNullException(nameof(array));
          if (arrayIndex < 0) throw new ArgumentOutOfRangeException(nameof(arrayIndex));
-         if (Entities.Count > array.Length - arrayIndex) throw new ArgumentException("The number of elements in the source ICollection is greater than the available space from arrayIndex to the end of the destination array");
-
-         int index = arrayIndex;
-         foreach (T obj in Entities) array[index++] = obj;
+         if (Count > array.Length - arrayIndex) throw new ArgumentException("The number of elements in the source ICollection is greater than the available space from arrayIndex to the end of the destination array");
+         this.ToList().CopyTo(array, arrayIndex);
       }
 
       /// <summary>Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
@@ -133,18 +99,42 @@ namespace Sandbox_EFCore
       /// <returns>
       /// <see langword="true" /> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />. This method also returns <see langword="false" /> if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
       /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</exception>
-      public bool Remove(T item)
+      public bool Remove(TEntity item)
       {
-         return Joins.Remove(Joins.Single(x => (IsLCollection ? x.LHS as T : x.RHS as T) == item));
+         return GetCollection().Remove(GetCollection().FirstOrDefault(e => Equals(item, e)));
       }
 
       /// <summary>Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</summary>
       /// <returns>The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
-      public int Count => Joins.Count;
+      public int Count
+      {
+         get { return GetCollection().Count; }
+      }
 
       /// <summary>Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.</summary>
       /// <returns>
       /// <see langword="true" /> if the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only; otherwise, <see langword="false" />.</returns>
-      public bool IsReadOnly => false;
+      public bool IsReadOnly
+      {
+         get { return GetCollection().IsReadOnly; }
+      }
+
+      private static bool Equals(TEntity item, TJoin e)
+      {
+         return Equals(((IJoin<TEntity>)e).Navigation, item);
+      }
+
+      private ICollection<TJoin> GetCollection()
+      {
+         if (Collection == null)
+            Collection = typeof(TOwner).GetProperties()
+                                       .SingleOrDefault(p => p.PropertyType == typeof(ICollection<TJoin>))
+                                      ?.GetValue(OwnerEntity, null) as ICollection<TJoin>;
+
+         if (Collection == null)
+            throw new NullReferenceException($"Missing ICollection<{typeof(TJoin).FullName}> in entity type {typeof(TOwner).FullName} or collection haven't been initalized.");
+
+         return Collection;
+      }
    }
 }
