@@ -528,68 +528,98 @@ void WriteDbContextEFCore(ModelRoot modelRoot)
       // ****************************************************************
       // many-to-many
 
-      foreach (Association association in Association.GetLinksToTargets(modelClass)
-                                                     .Where(x => x.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany && 
-                                                                 x.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany))
+      List<Association> n2n = Association.GetLinksToTargets(modelClass)    
+                                         .Where(x => x.TargetMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany && 
+                                                     x.SourceMultiplicity == Sawczyn.EFDesigner.EFModel.Multiplicity.ZeroMany)
+                                         .ToList();
+
+      if (n2n.Any())
       {
-         if (visited.Contains(association)) continue;
-         visited.Add(association);
-
-         segments.Clear();
-         segments.Add($"modelBuilder.Entity<{association.Source.FullName}>()");
-         segments.Add($"Ignore(x => x.{association.TargetPropertyName})");
-         WriteLine(segments, modelRoot.ChopMethodChains);
-
-         if (association is BidirectionalAssociation b)
-         {
-            segments.Add($"modelBuilder.Entity<{b.Target.FullName}>()");
-            segments.Add($"Ignore(x => x.{b.SourcePropertyName})");
-            WriteLine(segments, modelRoot.ChopMethodChains);
-         }
+         NL();
+         Output($"#region Many-to-Many associations containing {modelClass.FullName}");
          NL();
 
-         string joinClassName = GetJoinClassName(association);
+         foreach (Association association in n2n)
+         {
+            if (visited.Contains(association)) continue;
+            visited.Add(association);
 
-         segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
-         segments.Add($"ToTable(\"{joinClassName}\")");
+            string joinClassName = GetJoinClassName(association);
+            List<string> lhsKeyNames = association.Source.IdentityAttributeNames.Select(n => $"LHS{n}").ToList();
+            List<string> rhsKeyNames = association.Target.IdentityAttributeNames.Select(n => $"RHS{n}").ToList();
+            List<string> keyNames = lhsKeyNames.Union(rhsKeyNames).ToList();
 
-         List<string> lhsKeyNames = association.Source.IdentityAttributeNames.Select(n => $"LHS_{n}").ToList();
-         List<string> rhsKeyNames = association.Target.IdentityAttributeNames.Select(n => $"RHS_{n}").ToList();
-         List<string> keyNames = lhsKeyNames.Union(rhsKeyNames).ToList();
-         segments.Add($"HasKey(t => new {{ t.{string.Join(", t.", keyNames)} }})");
+            segments.Clear();
 
-         WriteLine(segments, modelRoot.ChopMethodChains);
+            // ignore the pseudo nav property we're creating in Source
+            segments.Add($"modelBuilder.Entity<{association.Source.FullName}>()");
+            segments.Add($"Ignore(x => x.{association.TargetPropertyName})");
+            WriteLine(segments, modelRoot.ChopMethodChains);
 
-         segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
-         segments.Add($"HasOne(x => x.LHS)");
-         segments.Add($"WithMany(x => x.{joinClassName}_List)");
+            if (association is BidirectionalAssociation b)
+            {
+               // set up the real nav property to the join class in Source
+               segments.Add($"modelBuilder.Entity<{b.Source.FullName}>()");
+               segments.Add($"HasMany(x => x.{joinClassName}_List)");
+               segments.Add($"WithOne(x => x.LHS)");
 
-         if (lhsKeyNames.Count == 1)
-            segments.Add($"HasForeignKey(x => x.{lhsKeyNames[0]})");
-         else
-            segments.Add($"HasForeignKey(x => new {{ x.{string.Join(", x.", lhsKeyNames)} }})");
+               if (lhsKeyNames.Count == 1)
+                  segments.Add($"HasForeignKey(x => x.{lhsKeyNames[0]})");
+               else
+                  segments.Add($"HasForeignKey(x => new {{ x.{string.Join(", x.", lhsKeyNames)} }})");
 
-         segments.Add($"IsRequired()");
+               segments.Add($"IsRequired()");
+               WriteLine(segments, modelRoot.ChopMethodChains);
 
-         WriteLine(segments, modelRoot.ChopMethodChains);
+               // ignore the pseudo nav property we're creating in Target
+               segments.Add($"modelBuilder.Entity<{b.Target.FullName}>()");
+               segments.Add($"Ignore(x => x.{b.SourcePropertyName})");
+               WriteLine(segments, modelRoot.ChopMethodChains);
 
-         segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
-         segments.Add($"HasOne(x => x.RHS)");
-         segments.Add($"WithMany(x => x.{joinClassName}_List)");
 
-         if (rhsKeyNames.Count == 1)
-            segments.Add($"HasForeignKey(x => x.{rhsKeyNames[0]})");
-         else
-            segments.Add($"HasForeignKey(x => new {{ x.{string.Join(", x.", rhsKeyNames)} }})");
+               // set up the real nav property to the join class in Target
+               segments.Add($"modelBuilder.Entity<{b.Target.FullName}>()");
+               segments.Add($"HasMany(x => x.{joinClassName}_List)");
+               segments.Add($"WithOne(x => x.RHS)");
 
-         segments.Add($"IsRequired()");
+               if (lhsKeyNames.Count == 1)
+                  segments.Add($"HasForeignKey(x => x.{rhsKeyNames[0]})");
+               else
+                  segments.Add($"HasForeignKey(x => new {{ x.{string.Join(", x.", rhsKeyNames)} }})");
 
-         WriteLine(segments, modelRoot.ChopMethodChains);
+               segments.Add($"IsRequired()");
+               WriteLine(segments, modelRoot.ChopMethodChains);
+            }
+            else
+            {
+               // set up the real nav property to the join class
+               segments.Add($"modelBuilder.Entity<{association.Source.FullName}>()");
+               segments.Add($"HasMany(x => x.{joinClassName}_List)");
+               segments.Add($"WithOne(x => x.LHS)");
+
+               if (lhsKeyNames.Count == 1)
+                  segments.Add($"HasForeignKey(x => x.{lhsKeyNames[0]})");
+               else
+                  segments.Add($"HasForeignKey(x => new {{ x.{string.Join(", x.", lhsKeyNames)} }})");
+
+               segments.Add($"IsRequired()");
+               WriteLine(segments, modelRoot.ChopMethodChains);
+            }
+
+            NL();
+
+            segments.Add($"modelBuilder.Entity<global::{modelClass.ModelRoot.Namespace}.{joinClassName}>()");
+            segments.Add($"ToTable(\"{joinClassName}\")");
+            segments.Add($"HasKey(t => new {{ t.{string.Join(", t.", keyNames)} }})");
+            WriteLine(segments, modelRoot.ChopMethodChains);
+            NL();
+         }
+
+         Output("#endregion Many-to-Many associations");
       }
    }
    
    NL();
-   
    Output("OnModelCreatedImpl(modelBuilder);");
    Output("}");
 
@@ -633,11 +663,11 @@ void WriteJoinClass(Association association)
    NL();
 
    Output($"public {association.Source.FullName} LHS {{ get; set; }}");
-   Output($"public Int32 LHS_Id {{ get; set; }}");
+   Output($"public Int32 LHSId {{ get; set; }}");
    NL();
 
    Output($"public {association.Target.FullName} RHS {{ get; set; }}");
-   Output($"public Int32 RHS_Id {{ get; set; }}");
+   Output($"public Int32 RHSId {{ get; set; }}");
    NL();
 
    Output($"{association.Source.FullName} IJoin<{association.Source.FullName}>.Navigation");

@@ -21,8 +21,8 @@ namespace Sandbox_EFCore
    public partial class EFModel : Microsoft.EntityFrameworkCore.DbContext
    {
       #region DbSets
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::Sandbox_EFCore.PressRelease> PressReleases { get; set; }
-      public virtual Microsoft.EntityFrameworkCore.DbSet<global::Sandbox_EFCore.PressReleaseDetail> PressReleaseDetails { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::Sandbox_EFCore.Source> Sources { get; set; }
+      public virtual Microsoft.EntityFrameworkCore.DbSet<global::Sandbox_EFCore.Target> Targets { get; set; }
       #endregion DbSets
 
       /// <summary>
@@ -54,22 +54,27 @@ namespace Sandbox_EFCore
 
          modelBuilder.HasDefaultSchema("dbo");
 
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease>().ToTable("PressReleases").HasKey(t => t.Id);
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease>().Ignore(x => x.PressReleaseDetails);
+         modelBuilder.Entity<global::Sandbox_EFCore.Source>().ToTable("Sources").HasKey(t => t.Id);
+         modelBuilder.Entity<global::Sandbox_EFCore.Source>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
 
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetails_x_PressReleaseDetail>().ToTable("PressRelease_PressReleaseDetails_x_PressReleaseDetail").HasKey(t => new { t.LHS_Id, t.RHS_Id });
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetails_x_PressReleaseDetail>().HasOne(x => x.LHS).WithMany(x => x.PressRelease_PressReleaseDetails_x_PressReleaseDetail_List).HasForeignKey(x => x.LHS_Id).IsRequired();
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetails_x_PressReleaseDetail>().HasOne(x => x.RHS).WithMany(x => x.PressRelease_PressReleaseDetails_x_PressReleaseDetail).HasForeignKey(x => x.RHS_Id).IsRequired();
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease>().Ignore(x => x.PressReleaseDetailHistory);
-         modelBuilder.Entity<global::Sandbox_EFCore.PressReleaseDetail>().Ignore(x => x.PressReleases);
+         #region Many-to-Many associations containing global::Sandbox_EFCore.Source
 
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>().ToTable("PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases").HasKey(t => new { t.LHS_Id, t.RHS_Id });
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>().HasOne(x => x.LHS).WithMany(x => x.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases_List).HasForeignKey(x => x.LHS_Id).IsRequired();
-         modelBuilder.Entity<global::Sandbox_EFCore.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases>().HasOne(x => x.RHS).WithMany(x => x.PressRelease_PressReleaseDetailHistory_x_PressReleaseDetail_PressReleases_List).HasForeignKey(x => x.RHS_Id).IsRequired();
+         modelBuilder.Entity<global::Sandbox_EFCore.Source>().Ignore(x => x.TargetsUni);
+         modelBuilder.Entity<global::Sandbox_EFCore.Source>().HasMany(x => x.Source_TargetsUni_x_Target_List).WithOne(x => x.LHS).HasForeignKey(x => x.LHSId).IsRequired();
 
-         modelBuilder.Entity<global::Sandbox_EFCore.PressReleaseDetail>().ToTable("PressReleaseDetails").HasKey(t => t.Id);
-         modelBuilder.Entity<global::Sandbox_EFCore.PressReleaseDetail>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
+         modelBuilder.Entity<global::Sandbox_EFCore.Source_TargetsUni_x_Target>().ToTable("Source_TargetsUni_x_Target").HasKey(t => new { t.LHSId, t.RHSId });
+
+         modelBuilder.Entity<global::Sandbox_EFCore.Source>().Ignore(x => x.TargetsBi);
+         modelBuilder.Entity<global::Sandbox_EFCore.Source>().HasMany(x => x.Source_TargetsBi_x_Target_Sources_List).WithOne(x => x.LHS).HasForeignKey(x => x.LHSId).IsRequired();
+         modelBuilder.Entity<global::Sandbox_EFCore.Target>().Ignore(x => x.Sources);
+         modelBuilder.Entity<global::Sandbox_EFCore.Target>().HasMany(x => x.Source_TargetsBi_x_Target_Sources_List).WithOne(x => x.RHS).HasForeignKey(x => x.RHSId).IsRequired();
+
+         modelBuilder.Entity<global::Sandbox_EFCore.Source_TargetsBi_x_Target_Sources>().ToTable("Source_TargetsBi_x_Target_Sources").HasKey(t => new { t.LHSId, t.RHSId });
+
+         #endregion Many-to-Many associations
+
+         modelBuilder.Entity<global::Sandbox_EFCore.Target>().ToTable("Targets").HasKey(t => t.Id);
+         modelBuilder.Entity<global::Sandbox_EFCore.Target>().Property(t => t.Id).IsRequired().ValueGeneratedOnAdd();
 
          OnModelCreatedImpl(modelBuilder);
       }

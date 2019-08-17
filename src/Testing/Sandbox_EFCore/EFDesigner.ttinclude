@@ -933,7 +933,7 @@ void WritePersistentNavigationProperties(ModelClass modelClass, bool requireVirt
          if (isManyToManyCore)
          {
             string joinClassName = GetJoinClassName(navigationProperty.AssociationObject);
-            Output($"public virtual ICollection<{joinClassName}> {joinClassName}_List {{ get; }} = new HashSet<{joinClassName}>();");
+            Output($"internal virtual ICollection<{joinClassName}> {joinClassName}_List {{ get; }} = new HashSet<{joinClassName}>();");
             Output("[NotMapped]");
             Output($"public {type} {navigationProperty.PropertyName} {{ get; private set; }}");
          }

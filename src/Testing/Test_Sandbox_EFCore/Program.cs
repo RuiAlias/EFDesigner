@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.EntityFrameworkCore;
+
 using Sandbox_EFCore;
 
 namespace Test_Sandbox_EFCore
@@ -12,13 +14,26 @@ namespace Test_Sandbox_EFCore
    {
       static void Main(string[] args)
       {
+         //using (EFModel context = new EFModel())
+         //{
+         //   Source s = new Source();
+         //   Target t1 = new Target();
+         //   Target t2 = new Target();
+
+         //   s.TargetsBi.Add(t1);
+         //   s.TargetsUni.Add(t2);
+
+         //   context.Sources.Add(s);
+         //   context.SaveChanges();
+         //}
+
          using (EFModel context = new EFModel())
          {
-            PressRelease pr = new PressRelease();
-            PressReleaseDetail prd = new PressReleaseDetail();
-            pr.PressReleaseDetails.Add(prd);
-            context.SaveChanges();
+            List<Source> sources = context.Sources.Where(s => s.TargetsBi.Any()).ToList();
+
+            Console.WriteLine(sources.Count);
          }
+
       }
    }
 }

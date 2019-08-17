@@ -15,6 +15,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Sandbox_EFCore
 {
@@ -127,7 +128,7 @@ namespace Sandbox_EFCore
       private ICollection<TJoin> GetCollection()
       {
          if (Collection == null)
-            Collection = typeof(TOwner).GetProperties()
+            Collection = typeof(TOwner).GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                                        .SingleOrDefault(p => p.PropertyType == typeof(ICollection<TJoin>))
                                       ?.GetValue(OwnerEntity, null) as ICollection<TJoin>;
 
