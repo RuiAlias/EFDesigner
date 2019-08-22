@@ -12487,23 +12487,6 @@ namespace Sawczyn.EFDesigner.EFModel
 					}
 				}
 			}
-			// ForeignKeyColumnName2
-			if (!serializationContext.Result.Failed)
-			{
-				string attribForeignKeyColumnName2 = EFModelSerializationHelper.Instance.ReadAttribute(serializationContext, element, reader, "foreignKeyColumnName2");
-				if (attribForeignKeyColumnName2 != null)
-				{
-					global::System.String valueOfForeignKeyColumnName2;
-					if (DslModeling::SerializationUtilities.TryGetValue<global::System.String>(serializationContext, attribForeignKeyColumnName2, out valueOfForeignKeyColumnName2))
-					{
-						instanceOfBidirectionalAssociation.ForeignKeyColumnName2 = valueOfForeignKeyColumnName2;
-					}
-					else
-					{	// Invalid property value, ignored.
-						EFModelSerializationBehaviorSerializationMessages.IgnoredPropertyValue(serializationContext, reader, "foreignKeyColumnName2", typeof(global::System.String), attribForeignKeyColumnName2);
-					}
-				}
-			}
 		}
 	
 		#region TryCreateInstance & TryCreateDerivedInstance
@@ -13034,18 +13017,6 @@ namespace Sawczyn.EFDesigner.EFModel
 					if (serializationContext.WriteOptionalPropertiesWithDefaultValue || string.CompareOrdinal(serializedPropValue, "true") != 0)
 					{	// No need to write the value out if it's the same as default value.
 						EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "sourceAutoProperty", serializedPropValue);
-					}
-				}
-			}
-			// ForeignKeyColumnName2
-			if (!serializationContext.Result.Failed)
-			{
-				global::System.String propValue = instanceOfBidirectionalAssociation.ForeignKeyColumnName2;
-				if (!serializationContext.Result.Failed)
-				{
-					if (propValue != null && (serializationContext.WriteOptionalPropertiesWithDefaultValue || string.CompareOrdinal(propValue, "(default)") != 0))
-					{	// No need to write the value out if it's the same as default value.
-						EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "foreignKeyColumnName2", propValue);
 					}
 				}
 			}

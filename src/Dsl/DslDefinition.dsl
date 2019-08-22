@@ -1072,11 +1072,6 @@
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="a2a95be0-5760-4e50-a2bd-af8d5897597f" Description="The name of the foreign key column in the second joined table." Name="ForeignKeyColumnName2" DisplayName="Foreign Key 2 Column Name" DefaultValue="(default)" Category="Database">
-          <Type>
-            <ExternalTypeMoniker Name="/System/String" />
-          </Type>
-        </DomainProperty>
       </Properties>
       <Source>
         <DomainRole Id="a775052d-a6a9-4916-8c4a-1bd7724b6e8b" Description="" Name="BidirectionalSource" DisplayName="Bidirectional Source" PropertyName="BidirectionalTargets" PropertyDisplayName="Bidirectional Targets">
@@ -1947,9 +1942,6 @@
           </XmlPropertyData>
           <XmlPropertyData XmlName="sourceAutoProperty">
             <DomainPropertyMoniker Name="BidirectionalAssociation/SourceAutoProperty" />
-          </XmlPropertyData>
-          <XmlPropertyData XmlName="foreignKeyColumnName2">
-            <DomainPropertyMoniker Name="BidirectionalAssociation/ForeignKeyColumnName2" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>

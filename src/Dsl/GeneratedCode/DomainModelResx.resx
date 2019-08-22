@@ -1769,18 +1769,6 @@
     <value>End 1</value>
     <comment>Category for DomainProperty &apos;SourceAutoProperty&apos; on DomainClass &apos;BidirectionalAssociation&apos;</comment>
   </data>
-  <data name="Sawczyn.EFDesigner.EFModel.BidirectionalAssociation/ForeignKeyColumnName2.Description" xml:space="preserve">
-    <value>The name of the foreign key column in the second joined table.</value>
-    <comment>Description for DomainProperty &apos;ForeignKeyColumnName2&apos; on DomainClass &apos;BidirectionalAssociation&apos;</comment>
-  </data>
-  <data name="Sawczyn.EFDesigner.EFModel.BidirectionalAssociation/ForeignKeyColumnName2.DisplayName" xml:space="preserve">
-    <value>Foreign Key 2 Column Name</value>
-    <comment>DisplayName for DomainProperty &apos;ForeignKeyColumnName2&apos; on DomainClass &apos;BidirectionalAssociation&apos;</comment>
-  </data>
-  <data name="Sawczyn.EFDesigner.EFModel.BidirectionalAssociation/ForeignKeyColumnName2.Category" xml:space="preserve">
-    <value>Database</value>
-    <comment>Category for DomainProperty &apos;ForeignKeyColumnName2&apos; on DomainClass &apos;BidirectionalAssociation&apos;</comment>
-  </data>
   <data name="Sawczyn.EFDesigner.EFModel.BidirectionalAssociation/BidirectionalSource.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainRole &apos;BidirectionalSource&apos; on DomainRelationship &apos;BidirectionalAssociation&apos;</comment>
