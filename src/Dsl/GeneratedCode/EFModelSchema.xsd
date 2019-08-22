@@ -536,7 +536,7 @@
           </xsd:annotation>
         </xsd:attribute>
         <!-- Property: MaxLength -->
-        <xsd:attribute name="maxLength" type="xsd:integer" >
+        <xsd:attribute name="maxLength" type="xsd:string" >
           <xsd:annotation>
             <xsd:documentation>Maximum length of the string, 0 for no max length</xsd:documentation>
           </xsd:annotation>
@@ -620,7 +620,7 @@
           </xsd:annotation>
         </xsd:attribute>
         <!-- Property: MinLength -->
-        <xsd:attribute name="minLength" type="xsd:integer" >
+        <xsd:attribute name="minLength" type="xsd:string" >
           <xsd:annotation>
             <xsd:documentation>Minimum length of the string, 0 for no minimum length</xsd:documentation>
           </xsd:annotation>
@@ -756,7 +756,7 @@
   <xsd:element name="modelEnum" type="ModelEnum" substitutionGroup="designElement" />
   <xsd:complexType name="ModelEnum">
     <xsd:annotation>
-      <xsd:documentation>No description available</xsd:documentation>
+      <xsd:documentation>Represents an enumeration in C#</xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="DesignElement">
@@ -863,7 +863,7 @@
   <xsd:element name="modelEnumValue" type="ModelEnumValue" substitutionGroup="core:modelElement" />
   <xsd:complexType name="ModelEnumValue">
     <xsd:annotation>
-      <xsd:documentation>No description available</xsd:documentation>
+      <xsd:documentation>Represents a value in a C# enumeration</xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="core:ModelElement">
@@ -1332,7 +1332,7 @@
   <xsd:element name="modelRootHasEnums" type="ModelRootHasEnums" substitutionGroup="core:modelElement" />
   <xsd:complexType name="ModelRootHasEnums">
     <xsd:annotation>
-      <xsd:documentation>No description available</xsd:documentation>
+      <xsd:documentation>Relationship rooting ModelEnum domain entities to the tree</xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="core:ModelElement">
@@ -1375,7 +1375,7 @@
   <xsd:element name="modelEnumHasValues" type="ModelEnumHasValues" substitutionGroup="core:modelElement" />
   <xsd:complexType name="ModelEnumHasValues">
     <xsd:annotation>
-      <xsd:documentation>No description available</xsd:documentation>
+      <xsd:documentation>Relationship linking enumeration values to an enumeration</xsd:documentation>
     </xsd:annotation>
     <xsd:complexContent>
       <xsd:extension base="core:ModelElement">

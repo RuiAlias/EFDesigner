@@ -23,8 +23,8 @@ namespace Sandbox_EF6
    public partial class EFModel : System.Data.Entity.DbContext
    {
       #region DbSets
-      public virtual System.Data.Entity.DbSet<global::Sandbox_EF6.PressRelease> PressReleases { get; set; }
-      public virtual System.Data.Entity.DbSet<global::Sandbox_EF6.PressReleaseDetail> PressReleaseDetails { get; set; }
+      public virtual System.Data.Entity.DbSet<global::Sandbox_EF6.Detail> Details { get; set; }
+      public virtual System.Data.Entity.DbSet<global::Sandbox_EF6.Master> Masters { get; set; }
       #endregion DbSets
 
       #region Constructors
@@ -111,39 +111,25 @@ namespace Sandbox_EF6
 
          modelBuilder.HasDefaultSchema("dbo");
 
-         modelBuilder.Entity<global::Sandbox_EF6.PressRelease>()
-                     .ToTable("PressReleases")
+         modelBuilder.Entity<global::Sandbox_EF6.Detail>()
+                     .ToTable("Details")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::Sandbox_EF6.PressRelease>()
+         modelBuilder.Entity<global::Sandbox_EF6.Detail>()
                      .Property(t => t.Id)
                      .IsRequired()
                      .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-         modelBuilder.Entity<global::Sandbox_EF6.PressRelease>()
-                     .HasMany(x => x.PressReleaseDetails)
-                     .WithRequired()
-                     .HasForeignKey(x => x.Fk1)
-                     .WillCascadeOnDelete(false);
 
-         modelBuilder.Entity<global::Sandbox_EF6.PressReleaseDetail>()
-                     .ToTable("PressReleaseDetails")
+         modelBuilder.Entity<global::Sandbox_EF6.Master>()
+                     .ToTable("Masters")
                      .HasKey(t => t.Id);
-         modelBuilder.Entity<global::Sandbox_EF6.PressReleaseDetail>()
+         modelBuilder.Entity<global::Sandbox_EF6.Master>()
                      .Property(t => t.Id)
                      .IsRequired()
-                     .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-         modelBuilder.Entity<global::Sandbox_EF6.PressReleaseDetail>()
-                     .Property(t => t.Fk1)
-                     .IsRequired();
-         modelBuilder.Entity<global::Sandbox_EF6.PressReleaseDetail>()
-                     .HasMany(x => x.PressReleases)
+                     .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+         modelBuilder.Entity<global::Sandbox_EF6.Master>()
+                     .HasMany(x => x.Details)
                      .WithRequired()
-                     .Map(x => x.MapKey("PressReleaseDetail.PressReleasesId"))
-                     .WillCascadeOnDelete(false);
-         modelBuilder.Entity<global::Sandbox_EF6.PressReleaseDetail>()
-                     .HasRequired(x => x.PressRelease)
-                     .WithMany(x => x.PressReleaseDetailHistory)
-                     .Map(x => x.MapKey("PressReleaseId"))
-                     .WillCascadeOnDelete(false);
+                     .Map(x => x.MapKey("Master.Details_Id"));
 
          OnModelCreatedImpl(modelBuilder);
       }
