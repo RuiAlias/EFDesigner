@@ -52,6 +52,16 @@ namespace Sawczyn.EFDesigner.EFModel
          }
       }
 
+      internal OutputLocation GetOutputDirectoriesValue()
+      {
+         return new OutputLocation(this);
+      }
+
+      internal NamespaceDefault GetNamespacesValue()
+      {
+         return new NamespaceDefault(this);
+      }
+
       internal sealed partial class LayoutAlgorithmPropertyHandler
       {
          private static readonly Dictionary<LayoutAlgorithm, LayoutAlgorithmSettings> settingsCache = new Dictionary<LayoutAlgorithm, LayoutAlgorithmSettings>();

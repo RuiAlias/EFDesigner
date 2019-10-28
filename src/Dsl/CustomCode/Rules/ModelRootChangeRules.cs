@@ -81,7 +81,7 @@ namespace Sawczyn.EFDesigner.EFModel
 
                if (string.IsNullOrEmpty(element.StructOutputDirectory) || element.StructOutputDirectory == (string)e.OldValue)
                   element.StructOutputDirectory = (string)e.NewValue;
-
+               
                break;
 
             case "FileNameMarker":
@@ -107,7 +107,36 @@ namespace Sawczyn.EFDesigner.EFModel
                break;
 
             case "Namespace":
-               errorMessages.Add(CommonRules.ValidateNamespace((string)e.NewValue, CodeGenerator.IsValidLanguageIndependentIdentifier));
+               string validateNamespace = CommonRules.ValidateNamespace((string)e.NewValue, CodeGenerator.IsValidLanguageIndependentIdentifier);
+               errorMessages.Add(validateNamespace);
+
+               if (validateNamespace == null)
+               {
+                  if (string.IsNullOrEmpty(element.EntityNamespaceDefault) || element.EntityNamespaceDefault == (string)e.OldValue)
+                     element.EntityNamespaceDefault = (string)e.NewValue;
+                  if (string.IsNullOrEmpty(element.EnumNamespaceDefault) || element.EnumNamespaceDefault == (string)e.OldValue)
+                     element.EnumNamespaceDefault = (string)e.NewValue;
+                  if (string.IsNullOrEmpty(element.StructNamespaceDefault) || element.StructNamespaceDefault == (string)e.OldValue)
+                     element.StructNamespaceDefault = (string)e.NewValue;
+               }
+
+               break;
+
+            case "EntityNamespaceDefault":
+               if (string.IsNullOrEmpty((string)e.NewValue) && !string.IsNullOrEmpty(element.Namespace))
+                  element.EntityNamespaceDefault = element.Namespace;
+
+               break;
+
+            case "EnumNamespaceDefault":
+               if (string.IsNullOrEmpty((string)e.NewValue) && !string.IsNullOrEmpty(element.Namespace))
+                  element.EnumNamespaceDefault = element.Namespace;
+
+               break;
+
+            case "StructNamespaceDefault":
+               if (string.IsNullOrEmpty((string)e.NewValue) && !string.IsNullOrEmpty(element.Namespace))
+                  element.StructNamespaceDefault = element.Namespace;
 
                break;
 

@@ -97,6 +97,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IO.Compression" />
@@ -149,6 +150,12 @@
       <DependentUpon>CommandSet.tt</DependentUpon>
     </Compile>
     <Compile Include="CustomCode\WizardImplementation.cs" />
+    <None Include="TextTemplates\EditingOnly\EF6Designer.cs" />
+    <None Include="TextTemplates\EditingOnly\EFCoreDesigner.cs" />
+    <None Include="TextTemplates\EditingOnly\EFDesigner.cs" />
+    <None Include="TextTemplates\EditingOnly\MultipleOutputHelper.cs" />
+    <None Include="TextTemplates\EditingOnly\TextTransformation.cs" />
+    <None Include="TextTemplates\EditingOnly\VSIntegration.cs" />
     <Compile Include="VSPackage.Designer.cs" />
     <Content Include="Logo.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -569,4 +576,5 @@ copy /y "$(SolutionDir)Dsl\GeneratedCode\EFModelSchema.xsd" "EFModel.xsd"
       <Version>4.3.2</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
 </Project>

@@ -30,7 +30,7 @@ namespace Sawczyn.EFDesigner.EFModel
 
    [Description("Default values for enumerations")]
    [TypeConverter(typeof (ExpandableObjectConverter))]
-   [DisplayName("Enumeraton Default Values")]
+   [DisplayName("Enumeration Default Values")]
    public class EnumDefaults
    {
    }

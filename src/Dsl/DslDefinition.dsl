@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Dsl xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="9987f227-3d05-49b7-b151-857879f5dfb8" Description="Entity Framework visual editor for EF6, EFCore and beyond." Name="EFModel" DisplayName="Entity Framework Visual Editor" Namespace="Sawczyn.EFDesigner.EFModel" MinorVersion="3" Revision="8" ProductName="EFDesigner" CompanyName="Michael Sawczyn" PackageGuid="56bbe1ba-aaee-4883-848f-e3c8656f8db2" PackageNamespace="Sawczyn.EFDesigner.EFModel" xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel">
+<Dsl xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="9987f227-3d05-49b7-b151-857879f5dfb8" Description="Entity Framework visual editor for EF6, EFCore and beyond." Name="EFModel" DisplayName="Entity Framework Visual Editor" Namespace="Sawczyn.EFDesigner.EFModel" MinorVersion="3" Build="1" ProductName="EFDesigner" CompanyName="Michael Sawczyn" PackageGuid="56bbe1ba-aaee-4883-848f-e3c8656f8db2" PackageNamespace="Sawczyn.EFDesigner.EFModel" xmlns="http://schemas.microsoft.com/VisualStudio/2005/DslTools/DslDefinitionModel">
   <Classes>
     <DomainClass Id="95532cb8-3452-4b09-a654-aeb2e2d0b3ad" Description="" Name="ModelRoot" DisplayName="Entity Model" Namespace="Sawczyn.EFDesigner.EFModel">
       <CustomTypeDescriptor>
@@ -21,7 +21,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="259ca9ae-0772-41d4-90b5-abd10888e839" Description="Namespace for all generated classes" Name="Namespace" DisplayName="Namespace" Category="Code Generation">
+        <DomainProperty Id="259ca9ae-0772-41d4-90b5-abd10888e839" Description="Namespace for all generated classes" Name="Namespace" DisplayName="Namespace" Category="Code Generation" IsBrowsable="false">
           <Type>
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
@@ -49,7 +49,7 @@
             <ExternalTypeMoniker Name="/System/Boolean" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="368a7c8c-e0db-40ef-b678-dbc4580d9e54" Description="Output directory for entities" Name="EntityOutputDirectory" DisplayName="Output Directory - Entities" Category="Code Generation">
+        <DomainProperty Id="368a7c8c-e0db-40ef-b678-dbc4580d9e54" Description="Output directory for entities" Name="EntityOutputDirectory" DisplayName="Output Directory - Entities" Category="Code Generation" IsBrowsable="false">
           <Attributes>
             <ClrAttribute Name="System.ComponentModel.TypeConverter">
               <Parameters>
@@ -61,7 +61,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="9e0ffa12-8733-40d2-8819-73740de7fecf" Description="Project directory for DbContext-related files" Name="ContextOutputDirectory" DisplayName="Output Directory - DbContext" Category="Code Generation">
+        <DomainProperty Id="9e0ffa12-8733-40d2-8819-73740de7fecf" Description="Project directory for DbContext-related files" Name="ContextOutputDirectory" DisplayName="Output Directory - DbContext" Category="Code Generation" IsBrowsable="false">
           <Attributes>
             <ClrAttribute Name="System.ComponentModel.TypeConverter">
               <Parameters>
@@ -73,7 +73,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="5de798f2-310f-40f7-8188-37690e6691b5" Description="Project directory for enums" Name="EnumOutputDirectory" DisplayName="Output Directory - Enums" Category="Code Generation">
+        <DomainProperty Id="5de798f2-310f-40f7-8188-37690e6691b5" Description="Project directory for enums" Name="EnumOutputDirectory" DisplayName="Output Directory - Enums" Category="Code Generation" IsBrowsable="false">
           <Attributes>
             <ClrAttribute Name="System.ComponentModel.TypeConverter">
               <Parameters>
@@ -188,7 +188,7 @@
             <ExternalTypeMoniker Name="/System/String" />
           </Type>
         </DomainProperty>
-        <DomainProperty Id="35350509-1856-4ca7-884a-1cee2552eef9" Description="Project directory for generated structures (owned/complex types)" Name="StructOutputDirectory" DisplayName="Output Directory - Structs" Category="Code Generation">
+        <DomainProperty Id="35350509-1856-4ca7-884a-1cee2552eef9" Description="Project directory for generated structures (owned/complex types)" Name="StructOutputDirectory" DisplayName="Output Directory - Structs" Category="Code Generation" IsBrowsable="false">
           <Attributes>
             <ClrAttribute Name="System.ComponentModel.TypeConverter">
               <Parameters>
@@ -249,6 +249,31 @@
         <DomainProperty Id="879483d1-6f57-4fc2-b501-4c62e9ff2a5d" Description="Tunable parameters for auto-layout of the designer" Name="LayoutAlgorithmSettings" DisplayName="Layout Algorithm Settings" Category="Designer">
           <Type>
             <ExternalTypeMoniker Name="/Microsoft.Msagl.Core.Layout/LayoutAlgorithmSettings" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="99a80813-d245-45dc-a46b-6d60b13f9e54" Description="Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Entity Namespace Default" Name="EntityNamespaceDefault" DisplayName="Entity Namespace Default" IsBrowsable="false">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="e027af27-eb0d-4222-98ad-e87158a60fc3" Description="Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Enum Namespace Default" Name="EnumNamespaceDefault" DisplayName="Enum Namespace Default" IsBrowsable="false">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="8a3a7de6-7d3d-4f62-8fba-565ebf309031" Description="Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Struct Namespace Default" Name="StructNamespaceDefault" DisplayName="Struct Namespace Default" IsBrowsable="false">
+          <Type>
+            <ExternalTypeMoniker Name="/System/String" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="d248af6a-e6bf-4c88-a419-e908d682736b" Description="Project directories for generated code" Name="OutputDirectories" DisplayName="Output Directories" Kind="Calculated" Category="Code Generation">
+          <Type>
+            <ExternalTypeMoniker Name="OutputLocation" />
+          </Type>
+        </DomainProperty>
+        <DomainProperty Id="708242dd-298f-4dfc-9d75-66cc46bd99ba" Description="Namespace for generated code" Name="Namespaces" DisplayName="Namespaces" Kind="Calculated" Category="Code Generation">
+          <Type>
+            <ExternalTypeMoniker Name="NamespaceDefault" />
           </Type>
         </DomainProperty>
       </Properties>
@@ -1441,6 +1466,8 @@
     <ExternalType Name="InitialValueType" Namespace="Sawczyn.EFDesigner.EFModel">
       <Notes>Just a string, but a specialized type so we can have a type converter for it</Notes>
     </ExternalType>
+    <ExternalType Name="OutputLocation" Namespace="Sawczyn.EFDesigner.EFModel" />
+    <ExternalType Name="NamespaceDefault" Namespace="Sawczyn.EFDesigner.EFModel" />
   </Types>
   <Shapes>
     <CompartmentShape Id="8055f08f-3d3a-435f-8b47-7afcd0e051bd" Description="" Name="ClassShape" DisplayName="Class Shape" Namespace="Sawczyn.EFDesigner.EFModel" GeneratesDoubleDerived="true" FixedTooltipText="Class Shape" TextColor="White" ExposesTextColor="true" FillColor="0, 122, 204" InitialHeight="0.3" OutlineThickness="0.01" FillGradientMode="None" ExposesOutlineColorAsProperty="true" ExposesFillColorAsProperty="true" ExposesOutlineDashStyleAsProperty="true" ExposesOutlineThicknessAsProperty="true" Geometry="Rectangle">
@@ -1777,6 +1804,21 @@
           </XmlPropertyData>
           <XmlPropertyData XmlName="layoutAlgorithmSettings">
             <DomainPropertyMoniker Name="ModelRoot/LayoutAlgorithmSettings" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="entityNamespaceDefault">
+            <DomainPropertyMoniker Name="ModelRoot/EntityNamespaceDefault" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="enumNamespaceDefault">
+            <DomainPropertyMoniker Name="ModelRoot/EnumNamespaceDefault" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="structNamespaceDefault">
+            <DomainPropertyMoniker Name="ModelRoot/StructNamespaceDefault" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="outputDirectories" Representation="Ignore">
+            <DomainPropertyMoniker Name="ModelRoot/OutputDirectories" />
+          </XmlPropertyData>
+          <XmlPropertyData XmlName="namespaces" Representation="Ignore">
+            <DomainPropertyMoniker Name="ModelRoot/Namespaces" />
           </XmlPropertyData>
         </ElementData>
       </XmlClassData>

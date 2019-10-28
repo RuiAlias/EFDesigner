@@ -525,6 +525,54 @@
     <value>Designer</value>
     <comment>Category for DomainProperty &apos;LayoutAlgorithmSettings&apos; on DomainClass &apos;ModelRoot&apos;</comment>
   </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/EntityNamespaceDefault.Description" xml:space="preserve">
+    <value>Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Entity Namespace Default</value>
+    <comment>Description for DomainProperty &apos;EntityNamespaceDefault&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/EntityNamespaceDefault.DisplayName" xml:space="preserve">
+    <value>Entity Namespace Default</value>
+    <comment>DisplayName for DomainProperty &apos;EntityNamespaceDefault&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/EnumNamespaceDefault.Description" xml:space="preserve">
+    <value>Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Enum Namespace Default</value>
+    <comment>Description for DomainProperty &apos;EnumNamespaceDefault&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/EnumNamespaceDefault.DisplayName" xml:space="preserve">
+    <value>Enum Namespace Default</value>
+    <comment>DisplayName for DomainProperty &apos;EnumNamespaceDefault&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/StructNamespaceDefault.Description" xml:space="preserve">
+    <value>Description for Sawczyn.EFDesigner.EFModel.ModelRoot.Struct Namespace Default</value>
+    <comment>Description for DomainProperty &apos;StructNamespaceDefault&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/StructNamespaceDefault.DisplayName" xml:space="preserve">
+    <value>Struct Namespace Default</value>
+    <comment>DisplayName for DomainProperty &apos;StructNamespaceDefault&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/OutputDirectories.Description" xml:space="preserve">
+    <value>Project directories for generated code</value>
+    <comment>Description for DomainProperty &apos;OutputDirectories&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/OutputDirectories.DisplayName" xml:space="preserve">
+    <value>Output Directories</value>
+    <comment>DisplayName for DomainProperty &apos;OutputDirectories&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/OutputDirectories.Category" xml:space="preserve">
+    <value>Code Generation</value>
+    <comment>Category for DomainProperty &apos;OutputDirectories&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/Namespaces.Description" xml:space="preserve">
+    <value>Namespace for generated code</value>
+    <comment>Description for DomainProperty &apos;Namespaces&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/Namespaces.DisplayName" xml:space="preserve">
+    <value>Namespaces</value>
+    <comment>DisplayName for DomainProperty &apos;Namespaces&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
+  <data name="Sawczyn.EFDesigner.EFModel.ModelRoot/Namespaces.Category" xml:space="preserve">
+    <value>Code Generation</value>
+    <comment>Category for DomainProperty &apos;Namespaces&apos; on DomainClass &apos;ModelRoot&apos;</comment>
+  </data>
   <data name="Sawczyn.EFDesigner.EFModel.ModelClass.Description" xml:space="preserve">
     <value></value>
     <comment>Description for DomainClass &apos;ModelClass&apos;</comment>

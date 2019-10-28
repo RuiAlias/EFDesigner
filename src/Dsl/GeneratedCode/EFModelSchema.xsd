@@ -270,6 +270,12 @@
             <xsd:documentation>Tunable parameters for auto-layout of the designer</xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
+        <!-- Property: EntityNamespaceDefault -->
+        <xsd:attribute name="entityNamespaceDefault" type="xsd:string" />
+        <!-- Property: EnumNamespaceDefault -->
+        <xsd:attribute name="enumNamespaceDefault" type="xsd:string" />
+        <!-- Property: StructNamespaceDefault -->
+        <xsd:attribute name="structNamespaceDefault" type="xsd:string" />
       </xsd:extension>
     </xsd:complexContent>
   </xsd:complexType>

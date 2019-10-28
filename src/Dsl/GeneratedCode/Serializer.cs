@@ -715,6 +715,57 @@ namespace Sawczyn.EFDesigner.EFModel
 					}
 				}
 			}
+			// EntityNamespaceDefault
+			if (!serializationContext.Result.Failed)
+			{
+				string attribEntityNamespaceDefault = EFModelSerializationHelper.Instance.ReadAttribute(serializationContext, element, reader, "entityNamespaceDefault");
+				if (attribEntityNamespaceDefault != null)
+				{
+					global::System.String valueOfEntityNamespaceDefault;
+					if (DslModeling::SerializationUtilities.TryGetValue<global::System.String>(serializationContext, attribEntityNamespaceDefault, out valueOfEntityNamespaceDefault))
+					{
+						instanceOfModelRoot.EntityNamespaceDefault = valueOfEntityNamespaceDefault;
+					}
+					else
+					{	// Invalid property value, ignored.
+						EFModelSerializationBehaviorSerializationMessages.IgnoredPropertyValue(serializationContext, reader, "entityNamespaceDefault", typeof(global::System.String), attribEntityNamespaceDefault);
+					}
+				}
+			}
+			// EnumNamespaceDefault
+			if (!serializationContext.Result.Failed)
+			{
+				string attribEnumNamespaceDefault = EFModelSerializationHelper.Instance.ReadAttribute(serializationContext, element, reader, "enumNamespaceDefault");
+				if (attribEnumNamespaceDefault != null)
+				{
+					global::System.String valueOfEnumNamespaceDefault;
+					if (DslModeling::SerializationUtilities.TryGetValue<global::System.String>(serializationContext, attribEnumNamespaceDefault, out valueOfEnumNamespaceDefault))
+					{
+						instanceOfModelRoot.EnumNamespaceDefault = valueOfEnumNamespaceDefault;
+					}
+					else
+					{	// Invalid property value, ignored.
+						EFModelSerializationBehaviorSerializationMessages.IgnoredPropertyValue(serializationContext, reader, "enumNamespaceDefault", typeof(global::System.String), attribEnumNamespaceDefault);
+					}
+				}
+			}
+			// StructNamespaceDefault
+			if (!serializationContext.Result.Failed)
+			{
+				string attribStructNamespaceDefault = EFModelSerializationHelper.Instance.ReadAttribute(serializationContext, element, reader, "structNamespaceDefault");
+				if (attribStructNamespaceDefault != null)
+				{
+					global::System.String valueOfStructNamespaceDefault;
+					if (DslModeling::SerializationUtilities.TryGetValue<global::System.String>(serializationContext, attribStructNamespaceDefault, out valueOfStructNamespaceDefault))
+					{
+						instanceOfModelRoot.StructNamespaceDefault = valueOfStructNamespaceDefault;
+					}
+					else
+					{	// Invalid property value, ignored.
+						EFModelSerializationBehaviorSerializationMessages.IgnoredPropertyValue(serializationContext, reader, "structNamespaceDefault", typeof(global::System.String), attribStructNamespaceDefault);
+					}
+				}
+			}
 		}
 	
 		/// <summary>
@@ -1742,6 +1793,39 @@ namespace Sawczyn.EFDesigner.EFModel
 				if (!serializationContext.Result.Failed)
 				{
 					EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "layoutAlgorithmSettings", serializedPropValue);
+				}
+			}
+			// EntityNamespaceDefault
+			if (!serializationContext.Result.Failed)
+			{
+				global::System.String propValue = instanceOfModelRoot.EntityNamespaceDefault;
+				if (!serializationContext.Result.Failed)
+				{
+					if (!string.IsNullOrEmpty(propValue))
+						EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "entityNamespaceDefault", propValue);
+	
+				}
+			}
+			// EnumNamespaceDefault
+			if (!serializationContext.Result.Failed)
+			{
+				global::System.String propValue = instanceOfModelRoot.EnumNamespaceDefault;
+				if (!serializationContext.Result.Failed)
+				{
+					if (!string.IsNullOrEmpty(propValue))
+						EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "enumNamespaceDefault", propValue);
+	
+				}
+			}
+			// StructNamespaceDefault
+			if (!serializationContext.Result.Failed)
+			{
+				global::System.String propValue = instanceOfModelRoot.StructNamespaceDefault;
+				if (!serializationContext.Result.Failed)
+				{
+					if (!string.IsNullOrEmpty(propValue))
+						EFModelSerializationHelper.Instance.WriteAttributeString(serializationContext, element, writer, "structNamespaceDefault", propValue);
+	
 				}
 			}
 		}

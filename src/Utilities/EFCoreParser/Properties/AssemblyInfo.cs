@@ -33,6 +33,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.3.0.8")]
-[assembly: AssemblyFileVersion("1.3.0.8")]
+[assembly: AssemblyVersion("1.3.1.0")]
+[assembly: AssemblyFileVersion("1.3.1.0")]
 [assembly: ReliabilityContract(Consistency.MayCorruptProcess, Cer.None)]
